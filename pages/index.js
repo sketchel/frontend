@@ -17,14 +17,14 @@ export default function Home() {
                 <h2 className="text-xl text-black dark:text-white">We're still in development, but consider joining the discord for more updates,<br />and tuning back on this website soon, or later, who knows?</h2>
               </div>
               <div className="mt-4">
-                <button 
-                  as="a" 
+                <a  
                   href="https://discord.gg/WTJeh8eCVD" 
                   className="btn btn-info"
+                  target="_blank"
                 >
                   <FaDiscord size="1.5em" />
                   &nbsp;Discord
-                </button>
+                </a>
               </div>
             </div>
           </div>
