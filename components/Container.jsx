@@ -9,9 +9,11 @@ export default function Container(props) {
                 <meta content="A simple community-driven drawing web application." name="description"/>
                 <script async src="https://arc.io/widget.min.js#mi9oJ3iF"></script>
             </Head>
-            <main className="flex p-8 justify-left flex flex-wrap">
-                {children}
-            </main>
+            <body className="flex flex-col h-screen">
+                <main>
+                    {children}
+                </main>
+            </body>
         </div>
     )
 }

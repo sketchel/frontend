@@ -8,7 +8,7 @@ export default function Home() {
     <>
       <Container>
         <div className="hero">
-          <div className="card shadow flex-col justify-center hero-content lg:flex-row">
+          <div className="card flex-col justify-center hero-content lg:flex-row">
             <div className="card-body">
               <h1 className="font-bold card-title text-3xl mb-2 text-black dark:text-white">
                 Sketchel!
@@ -30,6 +30,7 @@ export default function Home() {
           </div>
         </div>
       </Container>
+      <Footer />
     </>
   )
 }

@@ -3,7 +3,12 @@ module.exports = {
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    textColor: theme => theme('colors'),
+    textColor: {
+      'primary': '#59d0ff',
+      'secondary': '#ffed4a',
+      'danger': '#e3342f',
+    }
   },
   daisyui: {
     themes: [
@@ -15,7 +20,7 @@ module.exports = {
           'secondary': '#f000b8',
           'secondary-focus': '#bd0091',
           'secondary-content': '#ffffff',
-          'accent': '#37cdbe',
+          'accent': '#fafafa',
           'accent-focus': '#2aa79b',
           'accent-content': '#ffffff',
           'neutral': '#3d4451',
