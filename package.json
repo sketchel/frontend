@@ -17,6 +17,7 @@
     "@emotion/react": "11",
     "@emotion/styled": "11",
     "autoprefixer": "^10.3.1",
+    "bulma": "^0.9.3",
     "daisyui": "^1.10.0",
     "framer-motion": "4",
     "next": "^11.0.1",

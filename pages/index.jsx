@@ -1,31 +1,22 @@
 import Container from '../components/Container'
 import Footer from '../components/Footer'
-import { button } from "daisyui"
-import { FaDiscord } from "react-icons/fa"
+import Navbar from '../components/Navbar'
 
 export default function Home() {
   return (
     <>
       <Container>
-        <div className="hero">
-          <div className="card flex-col justify-center hero-content lg:flex-row">
-            <div className="card-body">
-              <h1 className="font-bold card-title text-3xl mb-2 text-black dark:text-white">
-                Sketchel!
+        <div className="section hero is-medium is-info is-bold">
+          <div className="">
+            <div className="hero-head">
+              <Navbar />
+            </div>
+            <div align="center" className="hero-body has-text-centered justify-center">
+              <h1 className="title">
+              <i class="em em em-lower_left_paintbrush" aria-role="presentation" aria-label=""></i>
               </h1>
-              <div>
-                <h2 className="text-xl text-black dark:text-white">We're still in development, but consider joining the discord for more updates,<br />and tuning back on this website soon, or later, who knows?</h2>
-              </div>
-              <div className="mt-4">
-                <a  
-                  href="https://discord.gg/WTJeh8eCVD" 
-                  className="btn btn-info"
-                  target="_blank"
-                >
-                  <FaDiscord size="1.5em" />
-                  &nbsp;Discord
-                </a>
-              </div>
+              <h1 className="title"><strong>Sketchel</strong></h1>
+              <h2 className="subtitle">The newest platform to upload drawings/animations.</h2>
             </div>
           </div>
         </div>
