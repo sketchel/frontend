@@ -4,7 +4,7 @@ import { FaDiscord, FaHome } from 'react-icons/fa'
 export default function Navbar() {
     return (
         <header>
-            <nav className="navbar is-spaced" role="navigation" aria-label="main navigation">
+            <nav className="navbar" role="navigation" aria-label="main navigation">
                 <a href="/" className="navbar-brand">
                     <figure className="image is-48x48">
                         <img src="/Sketchel.png" alt="Logo" />

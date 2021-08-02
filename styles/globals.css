@@ -3,9 +3,13 @@
 @tailwind utilities;
 
 
-@import "../node_modules/bulma/css/bulma.css";
+@import "../node_modules/bulma/css/bulma.min.css";
 
 @font-face {
     font-family: 'Nunito';
     src: url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;800&display=swap');
+}
+
+.left-spaced {
+    margin-left: 8px;
 }
