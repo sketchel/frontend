@@ -15,7 +15,7 @@ export default function Navbar(props) {
                         <span aria-hidden="true"></span>
                     </a>
                 </a> 
-                {!props.loggedIn === 'true' ? (
+                {props.loggedIn === "false" ? (
                     <div className="navbar-menu is-active" id="navbar">
                         <div className="navbar-start">
                             <a className="navbar-item left-spaced" href="https://discord.com/invite/WTJeh8eCVD"> <FaDiscord size="1.5em"/>&nbsp;Discord</a>
@@ -43,6 +43,7 @@ export default function Navbar(props) {
                             </a>                            
                         </div>
                         <a className="navbar-item left-spaced" href="/profile"> <i className="fas fa-user-circle"></i>&nbsp;Profile</a>
+                        <a className="navbar-item left-spaced" onClick={props.wrapper.logout}> <i className="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
                     </div>
                 )}
             </nav>

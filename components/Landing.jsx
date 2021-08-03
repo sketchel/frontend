@@ -1,12 +1,12 @@
 import Navbar from './Navbar'
 
 
-export default function Landing() {
+export default function Landing(props) {
     return (
         <div className="section hero is-info is-bold">
         <div className="">
           <div className="hero-head">
-            <Navbar loggedIn="true" />
+            <Navbar loggedIn="false" wrapper={props.wrapper} />
           </div>
           <div align="center" className="hero-body has-text-centered justify-center">
             <h1 className="title">
