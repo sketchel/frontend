@@ -6,7 +6,7 @@ export default function Landing2(props) {
     return (
         <div className="section hero is-small is-info is-bold">
             <div className="hero-head">
-                <Navbar loggedIn="true" wrapper={props.wrapper} />
+                <Navbar loggedIn="true" />
             </div>
             <div align="center" className="hero-body has-text-centered justify-center">
                 <h1 className="title">

@@ -14,7 +14,6 @@ export default function Home() {
     setLoggedIn(localStorage.getItem('loggedIn'))
     const wrap = new wrapper(localStorage.getItem('session'))
     wrap.getMe()
-    setapiWrapper(wrap)
   })
   return (
     <>

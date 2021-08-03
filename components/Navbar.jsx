@@ -43,7 +43,7 @@ export default function Navbar(props) {
                             </a>                            
                         </div>
                         <a className="navbar-item left-spaced" href="/profile"> <i className="fas fa-user-circle"></i>&nbsp;Profile</a>
-                        <a className="navbar-item left-spaced" onClick={props.wrapper.logout}> <i className="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
+                        <a className="navbar-item left-spaced"> <i className="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
                     </div>
                 )}
             </nav>
