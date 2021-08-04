@@ -18,7 +18,7 @@ export default function Container(props) {
                 <link rel="manifest" href="/assets/site.webmanifest"/>
                 <link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#5bbad5"/>
                 <meta name="msapplication-TileColor" content="#5bd9ff"/>
-                <meta name="theme-color" content="#ffffff"/>
+                <meta name="theme-color" content="#59d0ff"/>
             </Head>
             <body>
                 <main>

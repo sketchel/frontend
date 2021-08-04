@@ -23,7 +23,7 @@ export default function Register(props) {
           password: event.target.password.value,
           confirmPassword: event.target.confirmPassword.value,
           email: event.target.email.value,
-          tosCheck: event.target.tosCheck.value
+          tosCheck: event.target.tosCheck.checked
         }),
         headers: {
           'Content-Type': 'application/json'

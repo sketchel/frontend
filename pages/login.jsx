@@ -22,7 +22,7 @@ export default function Login(props) {
             body: JSON.stringify({
               username: event.target.username.value,
               password: event.target.password.value,
-              rememberMe: event.target.rememberMeCheck.value
+              rememberMe: event.target.rememberMeCheck.checked
             }),
             headers: {
               'Content-Type': 'application/json'
