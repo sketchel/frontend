@@ -1,13 +1,52 @@
 
-import { FaDiscord, FaHome } from 'react-icons/fa'
+import { FaDiscord } from 'react-icons/fa'
+import config from '../config.json'
 
 export default function Navbar(props) {
+    const getUser = async event => {
+        let res = await fetch(
+          config.API_BASE + '/users/@me',
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': localStorage.getItem('session')
+            },
+            method: 'GET'
+          }
+        )
+        res = await res.json()
+        if (!res.user && localStorage.getItem('user')) {
+            localStorage.removeItem('user')
+            localStorage.removeItem('session')
+            localStorage.removeItem('loggedIn')
+            window.location.reload()
+        }
+        if (res.user) document.getElementById('name').innerHTML = res.user.name
+    }
+
+    const logout = async event => {
+        await fetch(
+          config.API_BASE + '/users/logout',
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': localStorage.getItem('session')
+            },
+            method: 'GET'
+          }
+        )
+        localStorage.removeItem('user')
+        localStorage.removeItem('session')
+        localStorage.removeItem('loggedIn')
+        window.location.reload()
+    }
+
     return (
-        <header>
-            <nav className="navbar" role="navigation" aria-label="main navigation">
+        <header onLoad={getUser}>
+            <nav className="navbar is-spaced" role="navigation" aria-label="main navigation">
                 <a href="/" className="navbar-brand">
                     <figure className="image is-48x48">
-                        <img src="/Sketchel.png" alt="Logo" />
+                        <img src="/assets/Sketchel.png" alt="Logo" />
                     </figure>
                     <a className="navbar-burger" role="button" data-target="navbar" aria-label="menu" aria-expanded="false">
                         <span aria-hidden="true"></span>
@@ -18,7 +57,7 @@ export default function Navbar(props) {
                 {props.loggedIn === "false" ? (
                     <div className="navbar-menu is-active" id="navbar">
                         <div className="navbar-start">
-                            <a className="navbar-item left-spaced" href="https://discord.com/invite/WTJeh8eCVD"> <FaDiscord size="1.5em"/>&nbsp;Discord</a>
+                            <a className="navbar-item left-spaced" href="https://discord.com/invite/WTJeh8eCVD"> <i className="fab fa-discord"></i>&nbsp;Discord</a>
                         </div>
                         <div className="navbar-end">
                             <a className="navbar-item" href="/login">
@@ -37,13 +76,24 @@ export default function Navbar(props) {
                             </a>
                             <a className="navbar-item" href="/feed">
                                 <i class="fas fa-rss-square"></i>&nbsp;Feed
-                            </a>
+                            </a>      
                             <a className="navbar-item" href="/search">
                                 <i class="fas fa-search"></i>&nbsp;Search
-                            </a>                            
+                            </a>                                       
                         </div>
-                        <a className="navbar-item left-spaced" href="/profile"> <i className="fas fa-user-circle"></i>&nbsp;Profile</a>
-                        <a className="navbar-item left-spaced"> <i className="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
+                        <div className="navbar-end">
+                            <a className="navbar-item"> <i class="fas fa-bell"></i></a>
+                            <a className="navbar-item" href="/create"> <i class="fas fa-paint-brush"></i></a>
+                            <div className="navbar-item has-dropdown is-hoverable">
+                                <a className="navbar-link" id="name">Your Name Here</a>
+                                <div className="navbar-dropdown">
+                                    <a className="navbar-item" href="/profile"> Profile</a>
+                                    <a className="navbar-item" href="/settings"> Settings</a>
+                                    <hr className="navbar-divider"></hr>
+                                    <a className="navbar-item" onClick={logout}> Logout</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 )}
             </nav>

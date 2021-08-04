@@ -6,9 +6,14 @@ import Navbar from '../components/Navbar'
 
 import config from '../config.json'
 import fetch from 'node-fetch'
+import { useEffect } from 'react'
 
 export default function Login(props) {
-    const [form, setForm] = useState(false)
+    let [form, setForm] = useState(false)
+    let [loggedIn, setLoggedIn] = useState(null);
+    useEffect(() => {  
+      setLoggedIn(localStorage.getItem('loggedIn'))
+    })
     const loginUser = async event => {
         event.preventDefault()
         const res = await fetch(
@@ -39,23 +44,29 @@ export default function Login(props) {
           })
           localStorage.setItem('session', result.session)
           localStorage.setItem('loggedIn', true)
+          localStorage.setItem('user', result.user)
         }
         return result
       }
-
     return (
         <>
           <Container>
             <div className="section hero is-info is-bold">
               <div className="">
                 <div className="hero-head">
-                  <Navbar />
+                  {loggedIn ? (
+                    <Navbar loggedIn="true" />
+                  ) : (
+                    <Navbar loggedIn="false" />
+                  )}
+                  
                 </div>
               </div>
             </div>
             <br></br>
             <div align="center" className="container box">
               <h1 className="title">Login to Sketchel!</h1>
+              <hr />
               {form.success === false ? (
                 <div className="notification is-danger"><strong>Error!</strong> {form.errors}</div>
               ) : form.success === true ? (

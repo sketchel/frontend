@@ -13,3 +13,19 @@
 .left-spaced {
     margin-left: 8px;
 }
+
+.navbar-dropdown {
+    color: black;
+}
+
+.navbar-item:focus {
+    background-color:black;
+}
+
+#searchInput {
+    margin-top: -0.4375em
+}
+
+.tag.is-primary {
+    color: #59C4F7
+}

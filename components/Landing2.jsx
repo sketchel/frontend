@@ -2,7 +2,6 @@ import Navbar from './Navbar'
 
 
 export default function Landing2(props) {
-    console.log(props)
     return (
         <div className="section hero is-small is-info is-bold">
             <div className="hero-head">

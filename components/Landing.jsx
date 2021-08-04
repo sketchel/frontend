@@ -10,7 +10,7 @@ export default function Landing(props) {
           </div>
           <div align="center" className="hero-body has-text-centered justify-center">
             <h1 className="title">
-            <i className="em em em-lower_left_paintbrush" ariaRole="presentation"></i>
+            <i className="em em em-lower_left_paintbrush"></i>
             </h1>
             <h1 className="title"><strong>Sketchel</strong></h1>
             <h2 className="subtitle">The newest platform to upload drawings/animations.</h2>

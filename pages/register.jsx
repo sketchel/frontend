@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import Container from '../components/Container'
 import Footer from '../components/Footer'
@@ -9,6 +9,10 @@ import fetch from 'node-fetch'
 
 export default function Register(props) {
   const [form, setForm] = useState(false)
+  let [loggedIn, setLoggedIn] = useState(null);
+  useEffect(() => {  
+    setLoggedIn(localStorage.getItem('loggedIn'))
+  })
   const registerUser = async event => {
     event.preventDefault()
     const res = await fetch(
@@ -17,6 +21,7 @@ export default function Register(props) {
         body: JSON.stringify({
           username: event.target.username.value,
           password: event.target.password.value,
+          confirmPassword: event.target.confirmPassword.value,
           email: event.target.email.value,
           tosCheck: event.target.tosCheck.value
         }),
@@ -48,13 +53,18 @@ export default function Register(props) {
         <div className="section hero is-info is-bold">
           <div className="">
             <div className="hero-head">
-              <Navbar />
+              {loggedIn ? (
+                <Navbar loggedIn="true" />
+              ) : (
+                <Navbar loggedIn="false" />
+              )}
             </div>
           </div>
         </div>
         <br></br>
         <div align="center" className="container box">
           <h1 className="title">Register for Sketchel!</h1>
+          <hr />
           {form.success === false ? (
             <div className="notification is-danger"><strong>Error!</strong> {form.errors}</div>
           ) : form.success === true ? (
@@ -76,6 +86,11 @@ export default function Register(props) {
             <div className="field">
               <div className="control"> 
                 <input className="input is-rounded" autoComplete="password" htmlFor="inputPassword" type="password" name="password" placeholder="password" required></input>
+              </div>
+            </div> 
+            <div className="field">
+              <div className="control"> 
+                <input className="input is-rounded" autoComplete="password" htmlFor="inputConfirmPassword" type="password" name="confirmPassword" placeholder="confirm password" required></input>
               </div>
             </div> 
             <div className="content has-text-centered">
