@@ -28,22 +28,40 @@ export default function UserProfile(props) {
               <div className="card">
                 <div className="card-content">
                   <div className="media">
-                    <div className="media-left">
-                      <figure className="image is-64x64">
-                        <img src={props.user.avatar} />
-                      </figure>
-                      <div className="media-content">
-                          <p className="title is-4">{props.user.name}&nbsp;
-                          <span class="tag is-info">{props.user.rank}</span>
-                          </p> 
-                        <p className="subtitle is-6">Joined at <strong>{props.formattedDate}</strong></p>
+                      <div className="media-left">
+                        <figure className="image is-64x64">
+                          <img src={props.user.avatar} />
+                        </figure>
                       </div>
-                    </div>
+                      <div className="media-content">
+                          <p className="title is-4"><strong id="username">{props.user.name}</strong>&nbsp;
+                          <span className="tag is-info" id="rank">{props.user.rank}</span>
+                          </p> 
+                        <p className="subtitle is-6">Joined at <strong id="joinedAt">{props.formattedDate}</strong></p>
+                      </div>
                   </div>
                   <div className="content has-text-centered">
                     <p id="bio">{props.user.description}</p>
                     <div className="container is-fluid">
                       <hr />
+                      <div>
+                        <nav className="level">
+                          <div className="level-item">
+                            <a className="button is-white" data-target="followerModal" id="openFollowerModal">
+                              <div>
+                                <p>Followers: <strong>{props.user.followers.length}</strong></p>
+                              </div>
+                            </a>
+                          </div>
+                          <div className="level-item">
+                            <a className="button is-white" data-target="followingModal" id="openFollowingModal">
+                              <div>
+                                <p>Following: <strong>{props.user.following.length}</strong></p>
+                              </div>
+                            </a>
+                          </div>
+                        </nav> 
+                      </div>
                     </div>
                   </div>
                 </div> 
