@@ -29,3 +29,7 @@
 .tag.is-primary {
     color: #59C4F7
 }
+
+hr {
+    border-color: #000;
+}

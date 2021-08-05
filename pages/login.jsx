@@ -1,19 +1,16 @@
-import { useState } from 'react'
-
 import Container from '../components/Container'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
+import { useCookie } from 'next-cookie'
 
 import config from '../config.json'
 import fetch from 'node-fetch'
-import { useEffect } from 'react'
+import { useState } from 'react'
 
 export default function Login(props) {
     let [form, setForm] = useState(false)
-    let [loggedIn, setLoggedIn] = useState(null);
-    useEffect(() => {  
-      setLoggedIn(localStorage.getItem('loggedIn'))
-    })
+    const cookie = useCookie(props.cookie)
+
     const loginUser = async event => {
         event.preventDefault()
         const res = await fetch(
@@ -42,9 +39,9 @@ export default function Login(props) {
             success: result.success,
             message: result.message
           })
-          localStorage.setItem('session', result.session)
-          localStorage.setItem('loggedIn', true)
-          localStorage.setItem('user', result.user)
+          cookie.set('session', result.session)
+          cookie.set('loggedIn', true)
+          cookie.set('user', result.user)
         }
         return result
       }
@@ -54,7 +51,7 @@ export default function Login(props) {
             <div className="section hero is-info is-bold">
               <div className="">
                 <div className="hero-head">
-                  {loggedIn ? (
+                  {props.loggedIn ? (
                     <Navbar loggedIn="true" />
                   ) : (
                     <Navbar loggedIn="false" />
@@ -99,4 +96,17 @@ export default function Login(props) {
           <Footer />
         </>
     )
+}
+
+export function getServerSideProps(context) {
+  const cookie = useCookie(context)
+
+  return {
+    props: {
+      loggedIn: cookie.get('loggedIn') || null,
+      session: cookie.get('session') || null,
+      user: cookie.get('user') || null,
+      cookie: context.req.headers.cookie || ''
+     }
+  }
 }

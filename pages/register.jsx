@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { useCookie } from 'next-cookie'
 
 import Container from '../components/Container'
 import Footer from '../components/Footer'
@@ -9,10 +10,6 @@ import fetch from 'node-fetch'
 
 export default function Register(props) {
   const [form, setForm] = useState(false)
-  let [loggedIn, setLoggedIn] = useState(null);
-  useEffect(() => {  
-    setLoggedIn(localStorage.getItem('loggedIn'))
-  })
   const registerUser = async event => {
     event.preventDefault()
     const res = await fetch(
@@ -53,7 +50,7 @@ export default function Register(props) {
         <div className="section hero is-info is-bold">
           <div className="">
             <div className="hero-head">
-              {loggedIn ? (
+              {props.loggedIn ? (
                 <Navbar loggedIn="true" />
               ) : (
                 <Navbar loggedIn="false" />
@@ -68,7 +65,7 @@ export default function Register(props) {
           {form.success === false ? (
             <div className="notification is-danger"><strong>Error!</strong> {form.errors}</div>
           ) : form.success === true ? (
-            <meta http-equiv="refresh" content="0; URL=/" />
+            <meta http-equiv="refresh" content="0; URL=/login" />
           ) : (
             ''
           )}
@@ -111,4 +108,15 @@ export default function Register(props) {
       <Footer />
     </>
   )
+}
+
+export function getServerSideProps(context) {
+  const cookie = useCookie(context)
+  return {
+    props: {
+      loggedIn: cookie.get('loggedIn') || null,
+      session: cookie.get('session') || null,
+      user: cookie.get('user') || null,
+     }
+  }
 }

@@ -1,26 +1,27 @@
 import { useState, useEffect } from 'react'
 import config from '../config.json'
+import { useCookie } from 'next-cookie'
 
 import Container from '../components/Container'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 
-export default function Settings() {
+export default function Settings(props) {
   let [form, setForm] = useState(false)
-  let [loggedIn, setLoggedIn] = useState(null);
+  const cookie = useCookie(props.cookie)
   useEffect(async () => {  
-    setLoggedIn(localStorage.getItem('loggedIn'))
     let res = await fetch(
       config.API_BASE + '/users/@me',
       {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': localStorage.getItem('session')
+          'Authorization': cookie.get('session')
         },
         method: 'GET'
       }
-    )
+    ) 
     res = await res.json()
+    if (!res.success) window.location.href = "/login"
     document.getElementById('privateCheck').checked = res.user.private
     document.getElementById('nsfwCheck').checked = res.user.nsfw
   })
@@ -42,15 +43,13 @@ export default function Settings() {
       if (newPassword.value) body.newPassword = newPassword.value
       body.nsfwCheck = nsfwCheck.checked
       body.privateCheck = privateCheck.checked
-      console.log(body)
-
       const res = await fetch(
         config.API_BASE + '/users/settings',
         {
           body: JSON.stringify(body),
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': localStorage.getItem('session')
+            'Authorization': cookie.get('session')
           },
           method: 'POST'
         }
@@ -75,32 +74,39 @@ export default function Settings() {
   return (
     <>
       <Container>
-        {loggedIn ? (
+        {props.loggedIn ? (
           <Navbar loggedIn="true" />
         ) : (
           <Navbar loggedIn="false" />
         )}
         <div className="container">
-          {form.success === false ? (
-            <div className="notification is-danger"><strong>Error!</strong> {form.errors}</div>
-          ) : form.success === true ? (
-            <div className="notification is-success"><strong>Success!</strong></div>
-          ) : (
-            ''
-          )}
+          <a href="/profile" className="text-primary">← Back to your profile</a>
+        </div>
+        <br />
+        <div className="container box">
+          <div align="center">
+            <h1 className="title is-4">Settings</h1>
+          </div>
           <form onSubmit={submitSettings}>
             <br/>
+            {form.success === false ? (
+              <div className="notification is-danger"><strong>Error!</strong> {form.errors}</div>
+            ) : form.success === true ? (
+              <div className="notification is-success"><strong>Success!</strong></div>
+            ) : (
+              ''
+            )}
             <p>Change username</p>
             <br />
             <hr />
             <div className="field">
               <p className="control">
-                <input className="input is-rounded" for="currentPassword2" type="password" name="currentPassword2" placeholder="current password"></input>
+                <input className="input is-rounded" htmlFor="currentPassword2" type="password" name="currentPassword2" placeholder="current password"></input>
               </p>
             </div>
             <div className="field">
               <p className="control">
-                <input className="input is-rounded" for="newUsername" type="text" name="newUsername" placeholder="new username"></input>
+                <input className="input is-rounded" htmlFor="newUsername" type="text" name="newUsername" placeholder="new username"></input>
               </p>
             </div>
             <p>Change password</p>
@@ -108,12 +114,12 @@ export default function Settings() {
             <hr />
             <div className="field">
               <p className="control">
-                <input className="input is-rounded" for="currentPassword" type="password" name="currentPassword" placeholder="current password"></input>
+                <input className="input is-rounded" htmlFor="currentPassword" type="password" name="currentPassword" placeholder="current password"></input>
               </p>
             </div>
             <div className="field">
               <p className="control">
-                <input className="input is-rounded" for="newPassword" type="password" name="newPassword" placeholder="new password"></input>
+                <input className="input is-rounded" htmlFor="newPassword" type="password" name="newPassword" placeholder="new password"></input>
               </p>
             </div>
             <div className="field">
@@ -136,3 +142,14 @@ export default function Settings() {
   )
 }
   
+export function getServerSideProps(context) {
+  const cookie = useCookie(context)
+  return {
+    props: {
+      loggedIn: cookie.get('loggedIn') || null,
+      session: cookie.get('session') || null,
+      user: cookie.get('user') || null,
+      cookie: context.req.headers.cookie || ''
+     }
+  }
+}

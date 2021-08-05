@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
 import config from '../config.json'
+import { useCookie } from 'next-cookie'
 import moment from 'moment'
 
 import Container from '../components/Container'
@@ -7,12 +7,7 @@ import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 
 export default function Profile(props) {
-  let [loggedIn, setLoggedIn] = useState(null);
-  useEffect(() => {  
-    setLoggedIn(localStorage.getItem('loggedIn'))
-    loadInData()
-  }, [])
-
+  const cookie = useCookie(props.cookie)
   const submitChanges = async (event) => {
     event.preventDefault()
     let res = await fetch(config.API_BASE + '/users/profile', {
@@ -21,7 +16,7 @@ export default function Profile(props) {
       }),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': localStorage.getItem('session')
+        'Authorization': cookie.get('session')
       },
       method: 'POST'
     })
@@ -29,26 +24,10 @@ export default function Profile(props) {
     window.location.reload()
   }
 
-  const loadInData = async () => {
-    let res = await fetch(config.API_BASE + '/api/user/' + localStorage.getItem('user'), {
-      method: 'GET'
-    })
-    res = await res.json()
-    if (!res.success) window.location.href = "/login"
-    const formattedDate = moment(res.user.joinedAt).format("dddd, MMMM Do YYYY")
-    document.getElementById('bio').innerText = res.user.description
-    document.getElementById('bio2').innerText = res.user.description
-    document.getElementById('rank').innerText = res.user.rank
-    document.getElementById('username').innerText = res.user.name
-    document.getElementById('followers').innerText = res.user.followers.length
-    document.getElementById('following').innerText = res.user.following.length
-    document.getElementById('avatar').src = res.user.avatar
-    document.getElementById('joinedAt').innerText = formattedDate
-  }
   return (
     <>
       <Container>
-        {loggedIn ? (
+        {props.loggedIn ? (
           <Navbar loggedIn="true" />
         ) : (
           <Navbar loggedIn="false" />
@@ -59,7 +38,7 @@ export default function Profile(props) {
           <div className="modal-background"></div>
           <div className="modal-card">
             <header className="modal-card-head">
-              <p class="modal-card-title">Edit profile</p>
+              <p className="modal-card-title">Edit profile</p>
               <button className="button is-small" aria-label="close" id="exitModal" data-target="profileModal">
                 <span className="icon is-small">
                   <i className="fas fa-times"></i>
@@ -83,7 +62,7 @@ export default function Profile(props) {
             </form>
           </div>
         </div>
-        <div className="container is-fluid" onLoadingComplete={loadInData}>
+        <div className="container is-fluid">
           <div className="container columns is-multiline">
             <div className="column is-one-third">
               <div className="card">
@@ -91,21 +70,19 @@ export default function Profile(props) {
                   <div className="media">
                       <div className="media-left">
                         <figure className="image is-64x64">
-                          <img id="avatar" />
+                          <img src={props.resultUser.avatar} />
                         </figure>
                       </div>
                       <div className="media-content">
-                          <p className="title is-4"><strong id="username">Your Name</strong>&nbsp;
-                          <span className="tag is-info" id="rank">Your Rank</span>
+                          <p className="title is-4"><strong id="username">{props.resultUser.name}</strong>&nbsp;
+                          <span className="tag is-info" id="rank">{props.resultUser.rank}</span>
                           </p> 
-                        <p className="subtitle is-6">Joined at <strong id="joinedAt">date</strong></p>
+                        <p className="subtitle is-6">Joined at <strong id="joinedAt">{props.formattedDate}</strong></p>
                       </div>
                   </div>
                   <div className="content has-text-centered">
-                    <p id="bio">Description</p>
+                    <p id="bio">{props.resultUser.description}</p>
                     <div className="container is-fluid">
-                      <hr />
-                      <a className="button is-info" data-target="profileModal" id="showModal">Edit profile</a>
                     </div>
                   </div>
                   <div>
@@ -113,18 +90,23 @@ export default function Profile(props) {
                       <div className="level-item">
                         <a className="button is-white" data-target="followerModal" id="openFollowerModal">
                           <div>
-                            <p>Followers: <strong id="followers">5</strong></p>
+                            <p>Followers: <strong id="followers">{props.resultUser.followers.length}</strong></p>
                           </div>
                         </a>
                       </div>
                       <div className="level-item">
                         <a className="button is-white" data-target="followingModal" id="openFollowingModal">
                           <div>
-                            <p>Following: <strong id="following">5</strong></p>
+                            <p>Following: <strong id="following">{props.resultUser.following.length}</strong></p>
                           </div>
                         </a>
                       </div>
                     </nav> 
+                    <hr></hr>
+                    <div align="center">
+                      <a className="button is-info" data-target="profileModal" id="showModal">Edit profile</a>
+                      <a className="button is-info left-spaced" href="/settings">Settings</a>
+                    </div>
                   </div>
                 </div> 
               </div>
@@ -136,4 +118,31 @@ export default function Profile(props) {
       <Footer />
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const cookie = useCookie(context)
+  if (!cookie.get('user')) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+  let res = await fetch(config.API_BASE + '/api/user/' + cookie.get('user'), {
+    method: 'GET'
+  })
+  res = await res.json()
+  const formattedDate = moment(res.user.joinedAt).format("dddd, MMMM Do YYYY")
+  return {
+    props: {
+      loggedIn: cookie.get('loggedIn') || null,
+      session: cookie.get('session') || null,
+      user: cookie.get('user') || null,
+      cookie: context.req.headers.cookie || '',
+      resultUser: res.user,
+      formattedDate: formattedDate
+     }
+  }
 }

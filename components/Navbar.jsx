@@ -1,24 +1,24 @@
-
-import { FaDiscord } from 'react-icons/fa'
+import { useCookie } from 'next-cookie'
 import config from '../config.json'
 
 export default function Navbar(props) {
+    const cookie = useCookie(props.cookie)
     const getUser = async event => {
         let res = await fetch(
           config.API_BASE + '/users/@me',
           {
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': localStorage.getItem('session')
+              'Authorization': cookie.get('session')
             },
             method: 'GET'
           }
         )
         res = await res.json()
-        if (!res.user && localStorage.getItem('user')) {
-            localStorage.removeItem('user')
-            localStorage.removeItem('session')
-            localStorage.removeItem('loggedIn')
+        if (!res.user && cookie.get('user')) {
+            cookie.remove('user')
+            cookie.remove('session')
+            cookie.remove('loggedIn')
             window.location.reload()
         }
         if (res.user) document.getElementById('name').innerHTML = res.user.name
@@ -30,14 +30,14 @@ export default function Navbar(props) {
           {
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': localStorage.getItem('session')
+              'Authorization': cookie.get('session')
             },
             method: 'GET'
           }
         )
-        localStorage.removeItem('user')
-        localStorage.removeItem('session')
-        localStorage.removeItem('loggedIn')
+        cookie.remove('user')
+        cookie.remove('session')
+        cookie.remove('loggedIn')
         window.location.reload()
     }
 
@@ -100,3 +100,15 @@ export default function Navbar(props) {
         </header>
     )
 }
+
+export function getServerSideProps(context) {
+    const cookie = useCookie(context)
+    return {
+      props: {
+        loggedIn: cookie.get('loggedIn') || null,
+        session: cookie.get('session') || null,
+        user: cookie.get('user') || null,
+        cookie: context.req.headers.cookie || ''
+       }
+    }
+  }
