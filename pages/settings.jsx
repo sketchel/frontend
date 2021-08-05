@@ -124,11 +124,11 @@ export default function Settings(props) {
             </div>
             <div className="field">
               <input className="is-checkradio is-danger has-background-color" type="checkbox" name="nsfwCheck" id="nsfwCheck"></input>
-              <label for="nsfwCheck"> Do you post NSFW (18+) content?</label>
+              <label htmlFor="nsfwCheck"> Do you post NSFW (18+) content?</label>
             </div>
             <div className="field">
               <input className="is-checkradio is-danger has-background-color" type="checkbox" name="privateCheck" id="privateCheck"></input>
-              <label for="nsfwCheck"> Protect your profile</label>
+              <label htmlFor="nsfwCheck"> Protect your profile</label>
             </div>     
             <div align="center">
               <input className="button is-success is-medium is-rounded" data-callback="submitForm" type="submit" value="Save Changes"></input>

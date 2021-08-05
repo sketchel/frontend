@@ -31,6 +31,87 @@ export default function UserProfile(props) {
         ) : (
           <Navbar loggedIn="false" />
         )}
+        <script src="/js/modal.js"></script>
+        <div className="modal is-clipped" id="followingModal">
+          <div className="modal-background"></div>
+          <div className="modal-card">
+            <header className="modal-card-head">
+              <p className="modal-card-title">Following</p>
+              <button className="button is-small" aria-label="close" id="exitFollowingModal" data-target="followingModal">
+                <span className="icon is-small">
+                  <i className="fas fa-times"></i>
+                </span>
+              </button>
+            </header>
+            <section className="modal-card-body">
+              <div className="container">
+                {props.followingList.map((following) => {
+                  const format = moment(following.joinedAt).format("dddd, MMMM Do YYYY")
+                  return (
+                    <div className="media">
+                      <div className="media-left">
+                        <figure className="image is-64x64">
+                          <img src={following.avatar} alt={following.name} />
+                        </figure>
+                      </div>
+                      <div className="media-content">
+                        <p className="title is-4">
+                          {following.name}&nbsp;
+                          <span className="tag is-info" id="rank">{following.rank}</span>
+                        </p>
+                        <p className="subtitle">{format}</p>
+                      </div>
+                      <div className="media-right">
+                        <a className="button is-info" href={"/profile/" + following.id}>Profile</a>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </section>
+            <footer className="modal-card-foot">
+            </footer>
+          </div>
+        </div>
+        <div className="modal is-clipped" id="followerModal">
+          <div className="modal-background"></div>
+          <div className="modal-card">
+            <header className="modal-card-head">
+              <p className="modal-card-title">Followers</p>
+              <button className="button is-small" aria-label="close" id="exitFollowerModal" data-target="followerModal">
+                <span className="icon is-small">
+                  <i className="fas fa-times"></i>
+                </span>
+              </button>
+            </header>
+            <section className="modal-card-body">
+              {props.followerList.map((follower) => {
+                const format = moment(follower.joinedAt).format("dddd, MMMM Do YYYY")
+                return (
+                  <div className="media">
+                    <div className="media-left">
+                      <figure className="image is-64x64">
+                        <img src={follower.avatar} alt={follower.name} />
+                      </figure>
+                    </div>
+                    <div className="media-content">
+                      <p className="title is-4">
+                        {follower.name}&nbsp;
+                        <span className="tag is-info" id="rank">{follower.rank}</span>
+                      </p>
+                      <p className="subtitle">{format}</p>
+                    </div>
+                    <div className="media-right">
+                      <a className="button is-info" href={"/profile/" + follower.id}>Profile</a>
+                    </div>
+                  </div>
+                )
+              })}
+            </section>
+            <footer className="modal-card-foot">
+            </footer>
+          </div>
+        </div>
         <div className="container is-fluid">
           <div className="container columns is-multiline">
             <div className="column is-one-third">
@@ -123,6 +204,22 @@ export async function getServerSideProps(context) {
       }
     }
   }
+  let followingList = []
+  let followerList = []
+  for await (const follower of res.user.followers) {
+    let resFollower = await fetch(config.API_BASE + '/api/user/' + follower, {
+      method: 'GET'
+    })
+    resFollower = await resFollower.json()
+    followerList.push(resFollower.user)
+  }
+  for await (const following of res.user.following) {
+    let resFollowing = await fetch(config.API_BASE + '/api/user/' + following, {
+      method: 'GET'
+    })
+    resFollowing = await resFollowing.json()
+    followingList.push(resFollowing.user)
+  }
   return {
     props: { 
       resultUser: res.user,
@@ -131,7 +228,9 @@ export async function getServerSideProps(context) {
       session: cookie.get('session') || null,
       user: cookie.get('user') || null,
       cookie: context.req.headers.cookie || '',
-      followingYou: followingYou
+      followingYou: followingYou,
+      followerList: followerList,
+      followingList: followingList
      },
   }
 }
