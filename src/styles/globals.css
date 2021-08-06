@@ -10,6 +10,13 @@
     src: url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;800&display=swap');
 }
 
+.no {
+    position: absolute;
+    z-index: 1;
+    margin-top: 3.5rem;
+    margin-left: -10.5rem;
+}
+
 .left-spaced {
     margin-left: 8px;
 }

@@ -4,6 +4,7 @@ import Container from '../components/Container'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import { ReactSketchCanvas } from 'react-sketch-canvas'
+import { SketchPicker } from 'react-color'
 
 const styles = {
   'background-image': 'url(https://upload.wikimedia.org/wikipedia/commons/7/70/Graph_paper_scan_1600x1000_%286509259561%29.jpg)'
@@ -11,7 +12,8 @@ const styles = {
 
 export default function Create(props) {
   const canvas = React.createRef()
-  const picker = React.createRef()
+  let [color, setColor] = React.useState('#000')
+  let [visible, setVisible] = React.useState(false)
 
   const undoHandler = () => {
     const undo = canvas.current.undo
@@ -55,6 +57,8 @@ export default function Create(props) {
     }
   } 
 
+  const onTogglePicker = () => setVisible(!visible)
+
   // <div id="picker" onClick={colorChangeHandler}><div title="Pick a color" id="color-picker" ref={picker} className="more-space-upwards pickr"></div></div>
   return (
     <>
@@ -75,10 +79,19 @@ export default function Create(props) {
                   width="100%"
                   height="500px"
                   strokeWidth={4}
-                  strokeColor="black"
+                  strokeColor={color}
                 />
               </div>
               <div className="column container is-one-sixth panel">
+                { visible && (
+                  <SketchPicker 
+                    className="no"
+                    color={color} 
+                    onChangeComplete={(e) => {
+                      setColor(e.hex)
+                    }} />
+                )}
+                <button id="colorpicker" title="Pick a color" className="space-upwards button" onClick={ onTogglePicker } ><img height="24px" width="24px" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Colorwheel.svg"></img></button>
                 <hr />
                 <button id="undo" title="Undo" className="more-space-upwards button" onClick={undoHandler}><i className="fas fa-undo"></i></button>
                 <button id="redo" title="Redo" className="button space-upwards" onClick={redoHandler}><i className="fas fa-redo"></i></button>
