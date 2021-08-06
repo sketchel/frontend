@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import config from '../config.json'
+import config from '../../config.json'
 import { useCookie } from 'next-cookie'
 
 import Container from '../components/Container'

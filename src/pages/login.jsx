@@ -3,7 +3,7 @@ import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import { useCookie } from 'next-cookie'
 
-import config from '../config.json'
+import config from '../../config.json'
 import fetch from 'node-fetch'
 import { useState } from 'react'
 

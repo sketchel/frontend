@@ -5,7 +5,7 @@ import Container from '../components/Container'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 
-import config from '../config.json'
+import config from '../../config.json'
 import fetch from 'node-fetch'
 
 export default function Register(props) {
