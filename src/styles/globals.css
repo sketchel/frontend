@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 
-@import "../node_modules/bulma/css/bulma.min.css";
+@import "../../node_modules/bulma/css/bulma.min.css";
 
 @font-face {
     font-family: 'Nunito';

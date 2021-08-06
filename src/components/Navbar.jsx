@@ -1,5 +1,5 @@
 import { useCookie } from 'next-cookie'
-import config from '../config.json'
+import config from '../../config.json'
 
 export default function Navbar(props) {
     const cookie = useCookie(props.cookie)

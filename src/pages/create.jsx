@@ -58,11 +58,10 @@ export default function Create(props) {
 
   const colorChangeHandler = () => {
     canvas.current.strokeColor = '#' + window.sketchel.pickr._color.toHEXA().join('')
-    canvas.current.props.strokeColor = '#' + window.sketchel.pickr._color.toHEXA().join('')
   }
 
   const onUpdate = (updatedPaths) => {
-    canvas.current.forceUpdate()
+    canvas.current.setState()
     console.log(canvas.current)
     console.log('updated paths', updatedPaths)
     setPaths(updatedPaths)
