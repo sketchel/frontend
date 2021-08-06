@@ -3,8 +3,11 @@ import * as React from 'react'
 import Container from '../components/Container'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
+
 import { ReactSketchCanvas } from 'react-sketch-canvas'
 import { SketchPicker } from 'react-color'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPen, faEraser, faUndo, faRedo, faDumpster, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 const styles = {
   'background-image': 'url(https://upload.wikimedia.org/wikipedia/commons/7/70/Graph_paper_scan_1600x1000_%286509259561%29.jpg)'
@@ -93,14 +96,14 @@ export default function Create(props) {
                 )}
                 <button id="colorpicker" title="Pick a color" className="space-upwards button" onClick={ onTogglePicker } ><img height="24px" width="24px" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Colorwheel.svg"></img></button>
                 <hr />
-                <button id="undo" title="Undo" className="more-space-upwards button" onClick={undoHandler}><i className="fas fa-undo"></i></button>
-                <button id="redo" title="Redo" className="button space-upwards" onClick={redoHandler}><i className="fas fa-redo"></i></button>
+                <button id="undo" title="Undo" className="more-space-upwards button" onClick={undoHandler}><FontAwesomeIcon icon={faUndo}/></button>
+                <button id="redo" title="Redo" className="button space-upwards" onClick={redoHandler}><FontAwesomeIcon icon={faRedo}/></button>
                 <hr />
-                <button id="pen" title="Pen" className="button more-space-upwards" onClick={penHandler}><i className="fas fa-pen"></i></button>
-                <button id="eraser" title="Eraser" className="button space-upwards" onClick={eraserHandler}><i className="fas fa-eraser"></i></button>
+                <button id="pen" title="Pen" className="button more-space-upwards" onClick={penHandler}><FontAwesomeIcon icon={faPen}/></button>
+                <button id="eraser" title="Eraser" className="button space-upwards" onClick={eraserHandler}><FontAwesomeIcon icon={faEraser}/></button>
                 <hr />
-                <button id="reset" title="Reset all" className="button is-danger more-space-upwards" onClick={resetHandler}><i className="fas fa-dumpster"></i></button>
-                <button id="clear" title="Clear all" className="button is-danger space-upwards" onClick={clearHandler}><i className="fas fa-trash"></i></button>
+                <button id="reset" title="Reset all" className="button is-danger more-space-upwards" onClick={resetHandler}><FontAwesomeIcon icon={faDumpster}/></button>
+                <button id="clear" title="Clear all" className="button is-danger space-upwards" onClick={clearHandler}><FontAwesomeIcon icon={faTrash}/></button>
               </div>
             </div>
           </div>
