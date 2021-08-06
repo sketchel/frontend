@@ -12,7 +12,6 @@ const styles = {
 export default function Create(props) {
   const canvas = React.createRef()
   const picker = React.createRef()
-  let [paths, setPaths] = React.useState(false)
 
   const undoHandler = () => {
     const undo = canvas.current.undo
@@ -56,17 +55,7 @@ export default function Create(props) {
     }
   } 
 
-  const colorChangeHandler = () => {
-    canvas.current.strokeColor = '#' + window.sketchel.pickr._color.toHEXA().join('')
-  }
-
-  const onUpdate = (updatedPaths) => {
-    canvas.current.setState()
-    console.log(canvas.current)
-    console.log('updated paths', updatedPaths)
-    setPaths(updatedPaths)
-  }
-
+  // <div id="picker" onClick={colorChangeHandler}><div title="Pick a color" id="color-picker" ref={picker} className="more-space-upwards pickr"></div></div>
   return (
     <>
       <Container>
@@ -77,8 +66,6 @@ export default function Create(props) {
         )}
         <br />
           <script src="/js/canvas.js"></script>
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/monolith.min.css"/>
-          <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
           <div align="center">
             <div className="container columns">
               <div className="box row no-gutters canvas-area m-0 p-0">
@@ -89,11 +76,9 @@ export default function Create(props) {
                   height="500px"
                   strokeWidth={4}
                   strokeColor="black"
-                  onUpdate={onUpdate}
                 />
               </div>
               <div className="column container is-one-sixth panel">
-                <div id="picker" onClick={colorChangeHandler}><div title="Pick a color" id="color-picker" ref={picker} className="more-space-upwards pickr"></div></div>
                 <hr />
                 <button id="undo" title="Undo" className="more-space-upwards button" onClick={undoHandler}><i className="fas fa-undo"></i></button>
                 <button id="redo" title="Redo" className="button space-upwards" onClick={redoHandler}><i className="fas fa-redo"></i></button>
