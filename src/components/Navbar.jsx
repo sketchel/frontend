@@ -1,5 +1,8 @@
 import { useCookie } from 'next-cookie'
 import config from '../../config.json'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignInAlt, faUserPlus, faFire, faRssSquare, faSearch, faPaintBrush, faBell, faSign } from '@fortawesome/free-solid-svg-icons'
+import { faDiscord } from '@fortawesome/free-brands-svg-icons'
 
 export default function Navbar(props) {
     const cookie = useCookie(props.cookie)
@@ -57,14 +60,14 @@ export default function Navbar(props) {
                 {props.loggedIn === "false" ? (
                     <div className="navbar-menu is-active" id="navbar">
                         <div className="navbar-start">
-                            <a className="navbar-item left-spaced" href="https://discord.com/invite/WTJeh8eCVD"> <i className="fab fa-discord"></i>&nbsp;Discord</a>
+                            <a className="navbar-item left-spaced" href="https://discord.com/invite/WTJeh8eCVD"> <FontAwesomeIcon icon={faDiscord}/>&nbsp;Discord</a>
                         </div>
                         <div className="navbar-end">
                             <a className="navbar-item" href="/login">
-                                <i className="fas fa-sign-in-alt"></i>&nbsp;Login
+                                <FontAwesomeIcon icon={faSignInAlt}/>&nbsp;Login
                             </a>
                             <a className="navbar-item" href="/register">
-                                <i className="fas fa-user-plus"></i>&nbsp;Register
+                                <FontAwesomeIcon icon={faUserPlus}/>&nbsp;Register
                             </a>
                         </div>
                     </div>
@@ -72,18 +75,18 @@ export default function Navbar(props) {
                     <div className="navbar-menu is-active" id="navbar">
                         <div className="navbar-start">
                             <a className="navbar-item" href="/hot">
-                                <i className="fas fa-fire"></i>&nbsp;Popular
+                                <FontAwesomeIcon icon={faFire}/>&nbsp;Popular
                             </a>
                             <a className="navbar-item" href="/feed">
-                                <i className="fas fa-rss-square"></i>&nbsp;Feed
+                                <FontAwesomeIcon icon={faRssSquare}/>&nbsp;Feed
                             </a>      
                             <a className="navbar-item" href="/search">
-                                <i className="fas fa-search"></i>&nbsp;Search
+                                <FontAwesomeIcon icon={faSearch}/>&nbsp;Search
                             </a>                                       
                         </div>
                         <div className="navbar-end">
-                            <a className="navbar-item"> <i className="fas fa-bell"></i></a>
-                            <a className="navbar-item" href="/create"> <i className="fas fa-paint-brush"></i></a>
+                            <a className="navbar-item"> <FontAwesomeIcon icon={faBell}/></a>
+                            <a className="navbar-item" href="/create"> <FontAwesomeIcon icon={faPaintBrush}/></a>
                             <div className="navbar-item has-dropdown is-hoverable">
                                 <a className="navbar-link" id="name">Your Name Here</a>
                                 <div className="navbar-dropdown">
