@@ -9,7 +9,7 @@ export default function Landing2(props) {
             </div>
             <div align="center" className="hero-body has-text-centered justify-center">
                 <h1 className="title">
-                <i className="em em em-wave" ariaRole="presentation"></i>
+                <i className="em em em-wave"></i>
                 </h1>
                 <h1 className="subtitle"><strong>Welcome back!</strong></h1>
             </div>

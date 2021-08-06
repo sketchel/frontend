@@ -45,10 +45,10 @@ export default function UserProfile(props) {
             </header>
             <section className="modal-card-body">
               <div className="container">
-                {props.followingList.map((following) => {
+                {props.followingList.map((following, i) => {
                   const format = moment(following.joinedAt).format("dddd, MMMM Do YYYY")
                   return (
-                    <div className="media">
+                    <div key={i} className="media">
                       <div className="media-left">
                         <figure className="image is-64x64">
                           <img src={following.avatar} alt={following.name} />
@@ -85,10 +85,10 @@ export default function UserProfile(props) {
               </button>
             </header>
             <section className="modal-card-body">
-              {props.followerList.map((follower) => {
+              {props.followerList.map((follower, i) => {
                 const format = moment(follower.joinedAt).format("dddd, MMMM Do YYYY")
                 return (
-                  <div className="media">
+                  <div key={i} className="media">
                     <div className="media-left">
                       <figure className="image is-64x64">
                         <img src={follower.avatar} alt={follower.name} />

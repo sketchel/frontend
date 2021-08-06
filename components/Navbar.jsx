@@ -61,10 +61,10 @@ export default function Navbar(props) {
                         </div>
                         <div className="navbar-end">
                             <a className="navbar-item" href="/login">
-                                <i class="fas fa-sign-in-alt"></i>&nbsp;Login
+                                <i className="fas fa-sign-in-alt"></i>&nbsp;Login
                             </a>
                             <a className="navbar-item" href="/register">
-                                <i class="fas fa-user-plus"></i>&nbsp;Register
+                                <i className="fas fa-user-plus"></i>&nbsp;Register
                             </a>
                         </div>
                     </div>
@@ -72,18 +72,18 @@ export default function Navbar(props) {
                     <div className="navbar-menu is-active" id="navbar">
                         <div className="navbar-start">
                             <a className="navbar-item" href="/hot">
-                                <i class="fas fa-fire"></i>&nbsp;Popular
+                                <i className="fas fa-fire"></i>&nbsp;Popular
                             </a>
                             <a className="navbar-item" href="/feed">
-                                <i class="fas fa-rss-square"></i>&nbsp;Feed
+                                <i className="fas fa-rss-square"></i>&nbsp;Feed
                             </a>      
                             <a className="navbar-item" href="/search">
-                                <i class="fas fa-search"></i>&nbsp;Search
+                                <i className="fas fa-search"></i>&nbsp;Search
                             </a>                                       
                         </div>
                         <div className="navbar-end">
-                            <a className="navbar-item"> <i class="fas fa-bell"></i></a>
-                            <a className="navbar-item" href="/create"> <i class="fas fa-paint-brush"></i></a>
+                            <a className="navbar-item"> <i className="fas fa-bell"></i></a>
+                            <a className="navbar-item" href="/create"> <i className="fas fa-paint-brush"></i></a>
                             <div className="navbar-item has-dropdown is-hoverable">
                                 <a className="navbar-link" id="name">Your Name Here</a>
                                 <div className="navbar-dropdown">
