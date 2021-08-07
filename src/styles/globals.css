@@ -4,6 +4,8 @@
 
 
 @import "../../node_modules/bulma/css/bulma.min.css";
+@import "../../node_modules/bulma-slider/dist/css/bulma-slider.min.css";
+
 
 @font-face {
     font-family: 'Nunito';
@@ -15,6 +17,10 @@
     z-index: 1;
     margin-top: 3.5rem;
     margin-left: -10.5rem;
+}
+
+.vertically-align {
+    vertical-align: middle
 }
 
 .left-spaced {

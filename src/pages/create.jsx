@@ -7,7 +7,7 @@ import Navbar from '../components/Navbar'
 import { ReactSketchCanvas } from 'react-sketch-canvas'
 import { SketchPicker } from 'react-color'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPen, faEraser, faUndo, faRedo, faDumpster, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faEraser, faUndo, faRedo, faDumpster, faTrash, faPaintBrush, faUpload, faFileUpload, faFileImport } from '@fortawesome/free-solid-svg-icons'
 
 const styles = {
   'background-image': 'url(https://upload.wikimedia.org/wikipedia/commons/7/70/Graph_paper_scan_1600x1000_%286509259561%29.jpg)'
@@ -17,6 +17,7 @@ export default function Create(props) {
   const canvas = React.createRef()
   let [color, setColor] = React.useState('#000')
   let [visible, setVisible] = React.useState(false)
+  let [width, setWidth] = React.useState(8)
 
   const undoHandler = () => {
     const undo = canvas.current.undo
@@ -33,14 +34,14 @@ export default function Create(props) {
   }
 
   const resetHandler = () => {
-    const reset = canvas.current.redo
+    const reset = canvas.current.resetHandler
     if (reset) {
       reset()
     }
   }
 
   const clearHandler = () => {
-    const clear = canvas.current.clear
+    const clear = canvas.current.clearCanvas
     if (clear) {
       clear()
     }
@@ -73,19 +74,32 @@ export default function Create(props) {
         )}
         <br />
           <script src="/js/canvas.js"></script>
+          <script src="/js/slider.js"></script>
           <div align="center">
             <div className="container columns">
-              <div className="box row no-gutters canvas-area m-0 p-0">
+              <div className="column container is-1 panel">
+                <div>
+                  <FontAwesomeIcon icon={faPaintBrush}></FontAwesomeIcon>
+                  <input title="Change brush width" id="sliderWithValue" onChange={(e) => setWidth(e.target.valueAsNumber)}class="vertically-centered more-space-upwards slider has-output-tooltip has-output is-fullwidth" step="1" min="1" max="400" defaultValue="8" type="range" orient="vertical"/>
+                  <output htmlFor="sliderWithValue">{width}</output>
+                </div>
+                <button id="upload" title="Upload to Sketchel" className="button is-success more-space-upwards"><FontAwesomeIcon icon={faUpload}/></button>
+                <button id="export" title="Export" className="button is-info more-space-upwards"><FontAwesomeIcon icon={faFileImport}/></button>
+                <button id="import" title="Import" className="button is-info space-upwards"><FontAwesomeIcon icon={faFileUpload}/></button>
+                
+              </div>
+              <div className="column box row no-gutters canvas-area m-0 p-0">
                 <ReactSketchCanvas
                   ref={canvas}
                   style={styles}
                   width="100%"
                   height="500px"
-                  strokeWidth={4}
+                  strokeWidth={width}
+                  eraserWidth={width}
                   strokeColor={color}
                 />
               </div>
-              <div className="column container is-one-sixth panel">
+              <div className="column container is-1 panel">
                 { visible && (
                   <SketchPicker 
                     className="no"
