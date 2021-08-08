@@ -15,7 +15,8 @@ export default function Post(props) {
 
   return (
     <>
-      <meta property="og:image" content={post.image}></meta>
+      <meta name="twitter:card" content="summary_large_image"></meta>
+      <meta name="twitter:image" content={post.image}></meta>
       <title>{props.title} - Sketchel!</title>
       <meta content={"by " + author.name + ", " + post.description} name="description"/>
       <Container>
