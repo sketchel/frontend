@@ -19,7 +19,7 @@ export default function Post(props) {
       <meta name="twitter:image" content={post.image}></meta>
       <title>{props.title} - Sketchel!</title>
       <meta property="og:site_name" content="Sketchel"/>
-      <meta property="og:title" content={props.title + ' by ' + author.name}/>
+      <meta property="og:title" content={post.title + ' by ' + author.name}/>
       <meta content={post.description} name="description"/>
       <Container>
         {props.loggedIn ? (
