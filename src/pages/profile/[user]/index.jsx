@@ -7,8 +7,11 @@ import Container from '../../../components/Container'
 import Footer from '../../../components/Footer'
 import Navbar from '../../../components/Navbar'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+
 export default function UserProfile(props) {
-  const router = useRouter();
+  const router = useRouter()
 
   const interact = async (event) => {
     let res = await fetch(config.API_BASE + '/users/interact/' + props.resultUser.id, {
@@ -39,7 +42,7 @@ export default function UserProfile(props) {
               <p className="modal-card-title">Following</p>
               <button className="button is-small" aria-label="close" id="exitFollowingModal" data-target="followingModal">
                 <span className="icon is-small">
-                  <i className="fas fa-times"></i>
+                  <FontAwesomeIcon icon={faTimes}/>
                 </span>
               </button>
             </header>
@@ -80,7 +83,7 @@ export default function UserProfile(props) {
               <p className="modal-card-title">Followers</p>
               <button className="button is-small" aria-label="close" id="exitFollowerModal" data-target="followerModal">
                 <span className="icon is-small">
-                  <i className="fas fa-times"></i>
+                  <FontAwesomeIcon icon={faTimes}/>
                 </span>
               </button>
             </header>

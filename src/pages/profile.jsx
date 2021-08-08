@@ -6,6 +6,9 @@ import Container from '../components/Container'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+
 export default function Profile(props) {
   const cookie = useCookie(props.cookie)
   const submitChanges = async (event) => {
@@ -40,7 +43,7 @@ export default function Profile(props) {
               <p className="modal-card-title">Edit profile</p>
               <button className="button is-small" aria-label="close" id="exitModal" data-target="profileModal">
                 <span className="icon is-small">
-                  <i className="fas fa-times"></i>
+                  <FontAwesomeIcon icon={faTimes}/>
                 </span>
               </button>
             </header>
@@ -68,7 +71,7 @@ export default function Profile(props) {
               <p className="modal-card-title">Following</p>
               <button className="button is-small" aria-label="close" id="exitFollowingModal" data-target="followingModal">
                 <span className="icon is-small">
-                  <i className="fas fa-times"></i>
+                  <FontAwesomeIcon icon={faTimes}/>
                 </span>
               </button>
             </header>
@@ -109,7 +112,7 @@ export default function Profile(props) {
               <p className="modal-card-title">Followers</p>
               <button className="button is-small" aria-label="close" id="exitFollowerModal" data-target="followerModal">
                 <span className="icon is-small">
-                  <i className="fas fa-times"></i>
+                  <FontAwesomeIcon icon={faTimes}/>
                 </span>
               </button>
             </header>
