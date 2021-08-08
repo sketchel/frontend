@@ -15,6 +15,9 @@ export default function Post(props) {
 
   return (
     <>
+      <meta property="og:image" content={post.image}></meta>
+      <title>{props.title} - Sketchel!</title>
+      <meta content={"by " + author.name + ", " + props.description} name="description"/>
       <Container>
         {props.loggedIn ? (
           <Navbar loggedIn="true" />
