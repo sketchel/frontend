@@ -18,7 +18,7 @@ export default function Post(props) {
       <meta name="twitter:card" content="summary_large_image"></meta>
       <meta name="twitter:image" content={post.image}></meta>
       <title>{props.title} - Sketchel!</title>
-      <meta content={"by " + author.name + ", " + post.description} name="description"/>
+      <meta content={post.title + " by " + author.name + ", " + post.description} name="description"/>
       <Container>
         {props.loggedIn ? (
           <Navbar loggedIn="true" />
