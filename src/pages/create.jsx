@@ -8,11 +8,9 @@ import config from '../../config.json'
 import { ReactSketchCanvas } from 'react-sketch-canvas'
 import { SketchPicker } from 'react-color'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPen, faEraser, faUndo, faRedo, faDumpster, faTrash, faPaintBrush, faUpload, faFileUpload, faFileImport, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faEraser, faUndo, faRedo, faDumpster, faTrash, faPaintBrush, faUpload, faFileUpload, faFileImport, faTimes, faPalette } from '@fortawesome/free-solid-svg-icons'
 
-const styles = {
-  'background-image': 'url(https://upload.wikimedia.org/wikipedia/commons/7/70/Graph_paper_scan_1600x1000_%286509259561%29.jpg)'
-};
+const styles = {}
 
 export default function Create(props) {
   const canvas = React.createRef()
@@ -45,7 +43,7 @@ export default function Create(props) {
   }
 
   const resetHandler = () => {
-    const reset = canvas.current.resetHandler
+    const reset = canvas.current.resetCanvas
     if (reset) {
       reset()
     }
@@ -135,7 +133,7 @@ export default function Create(props) {
                   <p>Title</p>
                   <div className="field">
                     <p className="control">
-                      <input class="input" type="text" name="title" placeholder="Give a title for your post"></input>
+                      <input className="input" type="text" name="title" placeholder="Give a title for your post"></input>
                     </p>
                   </div>
                   <p>Description</p>
@@ -157,9 +155,9 @@ export default function Create(props) {
           <div align="center">
             <div className="container columns">
               <div className="column container is-1 panel">
-                <div>
+                <div align="center">
                   <FontAwesomeIcon icon={faPaintBrush}></FontAwesomeIcon>
-                  <input title="Change brush width" id="sliderWithValue" onChange={(e) => setWidth(e.target.valueAsNumber)}class="vertically-centered more-space-upwards slider has-output-tooltip has-output is-fullwidth" step="1" min="1" max="400" defaultValue="8" type="range" orient="vertical"/>
+                  <input title="Change brush width" id="sliderWithValue" onChange={(e) => setWidth(e.target.valueAsNumber)}className="vertically-centered more-space-upwards vertical-slider has-output-tooltip has-output is-fullwidth" step="1" min="1" max="400" defaultValue="8" type="range" orient="vertical"/>
                   <output htmlFor="sliderWithValue">{width}</output>
                 </div>
                 <button id="upload" title="Upload to Sketchel" className="button is-success more-space-upwards" onClick={() => {
@@ -169,11 +167,11 @@ export default function Create(props) {
                 <button id="import" title="Import" className="button is-info space-upwards"><FontAwesomeIcon icon={faFileUpload}/></button>
                 
               </div>
-              <div className="column box row no-gutters canvas-area m-0 p-0">
+              <div className="column">
                 <ReactSketchCanvas
                   ref={canvas}
                   style={styles}
-                  width="100%"
+                  width="500px"
                   height="500px"
                   strokeWidth={width}
                   eraserWidth={width}
@@ -190,7 +188,7 @@ export default function Create(props) {
                       setColor(e.hex)
                     }} />
                 )}
-                <button id="colorpicker" title="Pick a color" className="space-upwards button" onClick={ onTogglePicker } ><img height="24px" width="24px" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Colorwheel.svg"></img></button>
+                <button id="colorpicker" title="Pick a color" className="space-upwards button" onClick={ onTogglePicker } ><FontAwesomeIcon icon={faPalette}/></button>
                 <hr />
                 <button id="undo" title="Undo" className="more-space-upwards button" onClick={undoHandler}><FontAwesomeIcon icon={faUndo}/></button>
                 <button id="redo" title="Redo" className="button space-upwards" onClick={redoHandler}><FontAwesomeIcon icon={faRedo}/></button>
@@ -212,6 +210,18 @@ export default function Create(props) {
   
 export async function getServerSideProps(context) {
   const cookie = useCookie(context)
+  let res = await fetch(config.API_BASE + '/users/@me' + cookie.get('user'), {
+    method: 'GET',
+    headers: {
+      Authorization: cookie.get('session')
+    }
+  })
+  res = await res.json()
+  if (!res.user && cookie.get('user')) {
+    cookie.remove('user')
+    cookie.remove('session')
+    cookie.remove('loggedIn')
+  }
   if (!cookie.get('user')) {
       return {
           redirect: {

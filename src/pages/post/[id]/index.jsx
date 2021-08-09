@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import moment from 'moment'
 import config from '../../../../config.json'
 
+import Image from 'next/image'
 import Container from '../../../components/Container'
 import Navbar from '../../../components/Navbar'
 import Footer from '../../../components/Footer'
@@ -32,7 +33,7 @@ export default function Post(props) {
           <h1 className="title">{post.title}</h1>
           <h2 className="subtitle">{post.description}</h2>
           <div className="box">
-            <img src={post.image} alt={post.title} />
+            <Image src={post.image} alt={post.title} height={500} width={500} />
           </div>
           <div align="left" className="box">
             <div className="media">
@@ -65,6 +66,18 @@ export async function getServerSideProps(context) {
   res = await res.json()
   if (!res.success) return { notFound: true }
   const cookie = useCookie(context)
+  let r = await fetch(config.API_BASE + '/users/@me' + cookie.get('user'), {
+    method: 'GET',
+    headers: {
+      Authorization: cookie.get('session')
+    }
+  })
+  r = await r.json()
+  if (!r.user && cookie.get('user')) {
+    cookie.remove('user')
+    cookie.remove('session')
+    cookie.remove('loggedIn')
+  }
   if (cookie.get('session')) {
     await fetch(config.API_BASE + '/users/view/' + context.query.id, {
       method: 'POST',

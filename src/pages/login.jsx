@@ -61,7 +61,7 @@ export default function Login(props) {
               </div>
             </div>
             <br></br>
-            <div align="center" className="container box">
+            <div align="center" className="container">
               <h1 className="title">Login to Sketchel!</h1>
               <hr />
               {form.success === false ? (

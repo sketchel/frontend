@@ -5,6 +5,7 @@ import moment from 'moment'
 import Container from '../components/Container'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
+import Image from 'next/image'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
@@ -34,8 +35,7 @@ export default function Profile(props) {
         ) : (
           <Navbar loggedIn="false" />
         )}
-        <script src="/js/modal.js"></script>
-        <script src="/js/autolink.js"></script>
+        <script async src="/js/modal.js"></script>
         <div className="modal is-clipped" id="profileModal">
           <div className="modal-background"></div>
           <div className="modal-card">
@@ -83,7 +83,7 @@ export default function Profile(props) {
                     <div key={i} className="media">
                       <div className="media-left">
                         <figure className="image is-64x64">
-                          <img src={following.avatar} alt={following.name} />
+                          <Image src={following.avatar} alt={following.name} height={64} width={64}/>
                         </figure>
                       </div>
                       <div className="media-content">
@@ -123,7 +123,7 @@ export default function Profile(props) {
                   <div key={i} className="media">
                     <div className="media-left">
                       <figure className="image is-64x64">
-                        <img src={follower.avatar} alt={follower.name} />
+                        <Image src={follower.avatar} alt={follower.name} height={64} width={64}/>
                       </figure>
                     </div>
                     <div className="media-content">
@@ -152,7 +152,7 @@ export default function Profile(props) {
                   <div className="media">
                       <div className="media-left">
                         <figure className="image is-64x64">
-                          <img src={props.resultUser.avatar} />
+                          <Image src={props.resultUser.avatar} height={64} width={64}/>
                         </figure>
                       </div>
                       <div className="media-content">

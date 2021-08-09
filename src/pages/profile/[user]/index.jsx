@@ -175,6 +175,7 @@ export default function UserProfile(props) {
 }
   
 export async function getServerSideProps(context) { 
+
   let res = await fetch(config.API_BASE + '/api/user/' + context.query.user, {
     method: 'GET'
   })
@@ -182,6 +183,18 @@ export async function getServerSideProps(context) {
   if (!res.success) return { notFound: true }
   const formattedDate = moment(res.user.joinedAt).format("dddd, MMMM Do YYYY")
   const cookie = useCookie(context)
+  let r = await fetch(config.API_BASE + '/users/@me' + cookie.get('user'), {
+    method: 'GET',
+    headers: {
+      Authorization: cookie.get('session')
+    }
+  })
+  r = await r.json()
+  if (!r.user && cookie.get('user')) {
+    cookie.remove('user')
+    cookie.remove('session')
+    cookie.remove('loggedIn')
+  }
   let me = await fetch(config.API_BASE + '/users/@me', 
     {
       headers: {

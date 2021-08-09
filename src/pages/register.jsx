@@ -59,7 +59,7 @@ export default function Register(props) {
           </div>
         </div>
         <br></br>
-        <div align="center" className="container box">
+        <div align="center" className="container">
           <h1 className="title">Register for Sketchel!</h1>
           <hr />
           {form.success === false ? (
@@ -112,6 +112,18 @@ export default function Register(props) {
 
 export function getServerSideProps(context) {
   const cookie = useCookie(context)
+  let r = await fetch(config.API_BASE + '/users/@me' + cookie.get('user'), {
+    method: 'GET',
+    headers: {
+      Authorization: cookie.get('session')
+    }
+  })
+  r = await r.json()
+  if (!r.user && cookie.get('user')) {
+    cookie.remove('user')
+    cookie.remove('session')
+    cookie.remove('loggedIn')
+  }
   return {
     props: {
       loggedIn: cookie.get('loggedIn') || null,
