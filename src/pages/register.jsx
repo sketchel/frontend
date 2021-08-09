@@ -110,7 +110,7 @@ export default function Register(props) {
   )
 }
 
-export function getServerSideProps(context) {
+export async function getServerSideProps(context) {
   const cookie = useCookie(context)
   let r = await fetch(config.API_BASE + '/users/@me' + cookie.get('user'), {
     method: 'GET',
