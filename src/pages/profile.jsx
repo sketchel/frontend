@@ -193,6 +193,16 @@ export default function Profile(props) {
                 </div> 
               </div>
             </div>
+            <div align="center" className="column">
+              {props.posts.map((post, i) => {
+                return (
+                  <div className="box">
+                    <img width={500} height={500} src={post.image} alt={post.title} />
+                    <a className="subtitle" style={{color: '#3e8ed0'}} href={"/post/" + post._id}>{post.title}</a>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
         <br />
@@ -215,7 +225,13 @@ export async function getServerSideProps(context) {
   let res = await fetch(config.API_BASE + '/api/user/' + cookie.get('user'), {
     method: 'GET'
   })
+  let posts = await fetch(config.API_BASE + '/api/posts/' + cookie.get('user'), {
+    method: 'GET'
+  }) 
   res = await res.json()
+  posts = await posts.json()
+  posts = posts.posts
+  console.log(posts)
   let followingList = []
   let followerList = []
   for await (const follower of res.user.followers) {
@@ -242,7 +258,8 @@ export async function getServerSideProps(context) {
       resultUser: res.user,
       formattedDate: formattedDate,
       followerList: followerList,
-      followingList: followingList
+      followingList: followingList,
+      posts: posts
      }
   }
 }

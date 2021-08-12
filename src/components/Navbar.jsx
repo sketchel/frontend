@@ -8,6 +8,27 @@ import Image from 'next/image'
 export default function Navbar(props) {
     const cookie = useCookie(props.cookie)
 
+    const getUser = async event => {
+        let res = await fetch(
+          config.API_BASE + '/users/@me',
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': cookie.get('session')
+            },
+            method: 'GET'
+          }
+        )
+        res = await res.json()
+        if (!res.user && cookie.get('user')) {
+            cookie.remove('user')
+            cookie.remove('session')
+            cookie.remove('loggedIn')
+            window.location.reload()
+        }
+        if (res.user) document.getElementById('name').innerHTML = res.user.name
+    }
+
     const logout = async event => {
         await fetch(
           config.API_BASE + '/users/logout',
@@ -26,7 +47,7 @@ export default function Navbar(props) {
     }
 
     return (
-        <header>
+        <header onLoad={getUser}>
             <nav className="navbar is-spaced" role="navigation" aria-label="main navigation">
                 <a href="/" className="navbar-brand">
                     <figure className="image is-48x48">
@@ -69,7 +90,7 @@ export default function Navbar(props) {
                             <a className="navbar-item"> <FontAwesomeIcon icon={faBell}/></a>
                             <a className="navbar-item" href="/create"> <FontAwesomeIcon icon={faPaintBrush}/></a>
                             <div className="navbar-item has-dropdown is-hoverable">
-                                <a className="navbar-link" id="name">{props.name}</a>
+                                <a className="navbar-link" id="name">User</a>
                                 <div className="navbar-dropdown">
                                     <a className="navbar-item" href="/profile"> Profile</a>
                                     <a className="navbar-item" href="/settings"> Settings</a>
