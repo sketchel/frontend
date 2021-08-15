@@ -11,9 +11,9 @@ export default function Home(props) {
     <>
       <Container>
         {props.loggedIn ? (
-          <Landing2 />
+          <Landing2 props={props} />
         ) : (
-          <Landing />
+          <Landing props={props} />
         )}
       </Container>
       <Footer />
@@ -23,11 +23,6 @@ export default function Home(props) {
   
 export async function getServerSideProps(context) {
   const cookie = useCookie(context)
-  if (!res.user && cookie.get('user')) {
-    cookie.remove('user')
-    cookie.remove('session')
-    cookie.remove('loggedIn')
-  }
   return {
     props: {
       loggedIn: cookie.get('loggedIn') || null,

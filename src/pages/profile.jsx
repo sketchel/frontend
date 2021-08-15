@@ -229,6 +229,7 @@ export async function getServerSideProps(context) {
     method: 'GET'
   }) 
   res = await res.json()
+  console.log(posts)
   posts = await posts.json()
   posts = posts.posts
   console.log(posts)

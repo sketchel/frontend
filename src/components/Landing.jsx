@@ -8,7 +8,7 @@ export default function Landing(props) {
         <div className="section hero is-info is-bold">
         <div className="">
           <div className="hero-head">
-            <Navbar loggedIn="false" />
+            <Navbar loggedIn="false" props={props.props} />
           </div>
           <div align="center" className="hero-body has-text-centered justify-center">
             <h1 className="title">
