@@ -167,41 +167,43 @@ export default function Profile(props) {
                     <div className="container is-fluid">
                     </div>
                   </div>
-                  <div>
-                    <nav className="level">
-                      <div className="level-item">
-                        <a className="button is-white" data-target="followerModal" id="openFollowerModal">
-                          <div>
-                            <p>Followers: <strong id="followers">{props.resultUser.followers.length}</strong></p>
-                          </div>
-                        </a>
-                      </div>
-                      <div className="level-item">
-                        <a className="button is-white" data-target="followingModal" id="openFollowingModal">
-                          <div>
-                            <p>Following: <strong id="following">{props.resultUser.following.length}</strong></p>
-                          </div>
-                        </a>
-                      </div>
-                    </nav> 
-                    <hr></hr>
-                    <div align="center">
-                      <a className="button is-info" data-target="profileModal" id="showModal">Edit profile</a>
-                      <a className="button is-info left-spaced" href="/settings">Settings</a>
-                    </div>
+                  <div align="center">
+                    <a className="button is-info" data-target="profileModal" id="showModal">Edit profile</a>
+                    <a className="button is-info left-spaced" href="/settings">Settings</a>
                   </div>
                 </div> 
               </div>
+              <br />
+              <div className="box" align="center">
+                <a className="button is-white" data-target="followerModal" id="openFollowerModal">
+                  <div>
+                    <p>Followers: <strong id="followers">{props.resultUser.followers.length}</strong></p>
+                  </div>
+                </a>
+                <a className="button is-white" data-target="followingModal" id="openFollowingModal">
+                  <div>
+                    <p>Following: <strong id="following">{props.resultUser.following.length}</strong></p>
+                  </div>
+                </a>
+                <br></br>
+              </div>
             </div>
             <div align="center" className="column">
-              {props.posts.map((post, i) => {
-                return (
-                  <div className="box">
-                    <img width={500} height={500} src={post.image} alt={post.title} />
-                    <a className="subtitle" style={{color: '#3e8ed0'}} href={"/post/" + post._id}>{post.title}</a>
-                  </div>
-                )
-              })}
+              <br />
+              <h1 className="title is-5">Posts ({props.posts.length})</h1>
+              <div className="columns is-multiline">
+                {props.posts.map((post, i) => {
+                  const format = moment(post.createdAt).fromNow()
+                  return (
+                    <div key={i} className="column is-one-third is-6">
+                      <img width="70%" height="auto" src={post.image} alt={post.title} />
+                      <br/>
+                      <h1 className="title is-5" style={{color: '#3e8ed0'}}><a href={"/post/" + post._id}>{post.title}</a></h1>
+                      <h2 className="subtitle is-6">{format}</h2>
+                    </div>
+                  )
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -229,10 +231,8 @@ export async function getServerSideProps(context) {
     method: 'GET'
   }) 
   res = await res.json()
-  console.log(posts)
   posts = await posts.json()
   posts = posts.posts
-  console.log(posts)
   let followingList = []
   let followerList = []
   for await (const follower of res.user.followers) {

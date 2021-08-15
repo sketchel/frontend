@@ -33,7 +33,7 @@ export default function Post(props) {
           <h1 className="title">{post.title}</h1>
           <h2 className="subtitle">{post.description}</h2>
           <div className="box">
-            <Image src={post.image} alt={post.title} height={500} width={500} />
+            <img src={post.image} alt={post.title} />
           </div>
           <div align="left" className="box">
             <div className="media">
