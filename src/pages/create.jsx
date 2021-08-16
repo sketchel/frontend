@@ -1,7 +1,6 @@
 import { useCookie } from 'next-cookie'
 import * as React from 'react'
 import Container from '../components/Container'
-import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 
 import config from '../../config.json'
@@ -19,13 +18,14 @@ export default function Create(props) {
   let [visible, setVisible] = React.useState(false)
   let [modalVisible, setModalVisible] = React.useState(false)
   let [width, setWidth] = React.useState(8)
+  let [paths, setPaths] = React.useState(null)
 
   React.useEffect(() => {
-    let t = JSON.parse(localStorage.getItem('paths')) || []
-    const load = canvas.current.loadPaths
-    if (load) {
-      if (t.length > 0) load(t)
-    }
+    //let t = JSON.parse(localStorage.getItem('paths')) || []
+    //const load = canvas.current.loadPaths
+    //if (load) {
+    //  if (t.length > 0) load(t)
+    //}
   })
 
   const undoHandler = () => {
@@ -97,7 +97,7 @@ export default function Create(props) {
 
   const onUpdate = (updatedPaths) => {
     try {
-      localStorage.setItem('paths', JSON.stringify(updatedPaths))
+      setPaths(JSON.stringify(updatedPaths))
     } catch (e) {
       console.error(e)
     }

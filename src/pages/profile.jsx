@@ -12,6 +12,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 export default function Profile(props) {
   const cookie = useCookie(props.cookie)
+  
   const submitChanges = async (event) => {
     event.preventDefault()
     let res = await fetch(config.API_BASE + '/users/profile', {
