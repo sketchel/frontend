@@ -105,7 +105,6 @@ export default function Register(props) {
         </div>
         <br></br>
       </Container>
-      <Footer />
     </>
   )
 }

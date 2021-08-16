@@ -16,7 +16,6 @@ export default function Home(props) {
           <Landing props={props} />
         )}
       </Container>
-      <Footer />
     </>
   )
 }

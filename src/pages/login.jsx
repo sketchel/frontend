@@ -93,7 +93,6 @@ export default function Login(props) {
             </div>
             <br></br>
           </Container>
-          <Footer />
         </>
     )
 }

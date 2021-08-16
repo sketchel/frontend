@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Footer from './Footer'
 
 export default function Container(props) {
     const { children, ...customMeta } = props
@@ -20,6 +21,7 @@ export default function Container(props) {
                 <main>
                     {children}
                 </main>
+                <Footer/>
             </body>
         </>
     )

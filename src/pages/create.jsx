@@ -203,7 +203,6 @@ export default function Create(props) {
           </div>
         <br />
       </Container>
-      <Footer />
     </>
   )
 }

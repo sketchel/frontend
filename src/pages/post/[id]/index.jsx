@@ -54,7 +54,6 @@ export default function Post(props) {
         </div>
         <br></br>
       </Container>
-      <Footer />
     </>
   )
 }

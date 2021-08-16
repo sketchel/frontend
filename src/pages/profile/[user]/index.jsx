@@ -3,15 +3,18 @@ import { useCookie } from 'next-cookie'
 import config from '../../../../config.json'
 import moment from 'moment'
 
+import Image from 'next/image'
 import Container from '../../../components/Container'
 import Footer from '../../../components/Footer'
 import Navbar from '../../../components/Navbar'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { useState } from 'react'
 
 export default function UserProfile(props) {
   const router = useRouter()
+  let [followsYou, setFollowsYou] = useState(props.followingYou)
 
   const interact = async (event) => {
     let res = await fetch(config.API_BASE + '/users/interact/' + props.resultUser.id, {
@@ -22,8 +25,8 @@ export default function UserProfile(props) {
       method: 'POST'
     })
     res = await res.json()
+    setFollowsYou(res.following)
     if (!res.success) return window.location.href = "/login"
-    window.location.reload()
   }
 
   return (
@@ -123,7 +126,7 @@ export default function UserProfile(props) {
                   <div className="media">
                       <div className="media-left">
                         <figure className="image is-64x64">
-                          <img src={props.resultUser.avatar} />
+                          <Image src={props.resultUser.avatar} height={64} width={64}/>
                         </figure>
                       </div>
                       <div className="media-content">
@@ -136,40 +139,59 @@ export default function UserProfile(props) {
                   <div className="content has-text-centered">
                     <p id="bio">{props.resultUser.description}</p>
                     <div className="container is-fluid">
-                      <hr />
-                      <div>
-                        <nav className="level">
-                          <div className="level-item">
-                            <a className="button is-white" data-target="followerModal" id="openFollowerModal">
-                              <div>
-                                <p>Followers: <strong>{props.resultUser.followers.length}</strong></p>
-                              </div>
-                            </a>
-                          </div>
-                          <div className="level-item">
-                            <a className="button is-white" data-target="followingModal" id="openFollowingModal">
-                              <div>
-                                <p>Following: <strong>{props.resultUser.following.length}</strong></p>
-                              </div>
-                            </a>
-                          </div>
-                        </nav> 
-                        {props.followingYou ? (
-                          <a onClick={interact} className="button is-info" id="followButton">Unfollow</a>
-                        ) : (
-                          <a onClick={interact} className="button is-info" id="followButton">Follow</a>
-                        )}
-                      </div>
                     </div>
                   </div>
+                  <div align="center">
+                    {followsYou ? (
+                      <a onClick={interact} className="button is-info" id="followButton">Unfollow</a>
+                    ) : (
+                      <a onClick={interact} className="button is-info" id="followButton">Follow</a>
+                    )}
+                  </div>
                 </div> 
+              </div>
+              <br />
+              <div className="box" align="center">
+                <h1 className="title is-5">Followers / Following</h1>
+                <a className="button is-white" data-target="followerModal" id="openFollowerModal">
+                  <div>
+                    <p>Followers: <strong id="followers">{props.resultUser.followers.length}</strong></p>
+                  </div>
+                </a>
+                <a className="button is-white" data-target="followingModal" id="openFollowingModal">
+                  <div>
+                    <p>Following: <strong id="following">{props.resultUser.following.length}</strong></p>
+                  </div>
+                </a>
+                <br></br>
+              </div>
+            </div>
+            <div align="center" className="column">
+              <br />
+              <h1 className="title is-5">Posts ({props.posts.length})</h1>
+              {props.posts.length === 0 ? (
+                <h2 className="subtitle is-5">This person has no posts :(</h2>
+              ) : (
+                <div/>
+              )}
+              <div className="columns is-multiline">
+                {props.posts.map((post, i) => {
+                  const format = moment(post.createdAt).fromNow()
+                  return (
+                    <div key={i} className="column is-one-third is-6">
+                      <img width="70%" height="auto" src={post.image} alt={post.title} />
+                      <br/>
+                      <h1 className="title is-5" style={{color: '#3e8ed0'}}><a href={"/post/" + post._id}>{post.title}</a></h1>
+                      <h2 className="subtitle is-6">{format}</h2>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           </div>
         </div>
         <br />
       </Container>
-      <Footer />
     </>
   )
 }
@@ -180,6 +202,10 @@ export async function getServerSideProps(context) {
     method: 'GET'
   })
   res = await res.json()
+  let posts = await fetch(config.API_BASE + '/api/posts/' + context.query.user, {
+    method: 'GET'
+  }) 
+  posts = await posts.json()
   if (!res.success) return { notFound: true }
   const formattedDate = moment(res.user.joinedAt).format("dddd, MMMM Do YYYY")
   const cookie = useCookie(context)
@@ -246,7 +272,8 @@ export async function getServerSideProps(context) {
       cookie: context.req.headers.cookie || '',
       followingYou: followingYou,
       followerList: followerList,
-      followingList: followingList
+      followingList: followingList,
+      posts: posts.posts
      },
   }
 }

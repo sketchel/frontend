@@ -136,7 +136,6 @@ export default function Settings(props) {
         </div>
         <br />
       </Container>
-      <Footer />
     </>
   )
 }

@@ -175,6 +175,7 @@ export default function Profile(props) {
               </div>
               <br />
               <div className="box" align="center">
+                <h1 className="title is-5">Followers / Following</h1>
                 <a className="button is-white" data-target="followerModal" id="openFollowerModal">
                   <div>
                     <p>Followers: <strong id="followers">{props.resultUser.followers.length}</strong></p>
@@ -209,7 +210,6 @@ export default function Profile(props) {
         </div>
         <br />
       </Container>
-      <Footer />
     </>
   )
 }
