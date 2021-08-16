@@ -27,6 +27,23 @@ export default function Profile(props) {
     res = await res.json()
     window.location.reload()
   }
+
+  async function setAvatar(event) {
+    event.preventDefault()
+    let res = await fetch(config.API_BASE + '/users/avatar', {
+      body: JSON.stringify({
+        avatar: event.target.id
+      }), 
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': cookie.get('session')
+      },
+      method: 'POST'
+    })
+    res = await res.json()
+    window.location.reload()
+  } 
+
   return (
     <>
       <Container>
@@ -181,7 +198,7 @@ export default function Profile(props) {
                     <p>Followers: <strong id="followers">{props.resultUser.followers.length}</strong></p>
                   </div>
                 </a>
-                <a className="button is-white" data-target="followingModal" id="openFollowingModal">
+                <a className="button left-spaced is-white" data-target="followingModal" id="openFollowingModal">
                   <div>
                     <p>Following: <strong id="following">{props.resultUser.following.length}</strong></p>
                   </div>
@@ -192,15 +209,22 @@ export default function Profile(props) {
             <div align="center" className="column">
               <br />
               <h1 className="title is-5">Posts ({props.posts.length})</h1>
+              {props.posts.length === 0 ? (
+                <h2 className="subtitle is-5">This person has no posts :(</h2>
+              ) : (
+                <div/>
+              )}
               <div className="columns is-multiline">
                 {props.posts.map((post, i) => {
                   const format = moment(post.createdAt).fromNow()
                   return (
-                    <div key={i} className="column is-one-third is-6">
+                    <div key={i} id="post" className="column is-one-third is-6">
+                      <br/>
                       <img width="70%" height="auto" src={post.image} alt={post.title} />
                       <br/>
                       <h1 className="title is-5" style={{color: '#3e8ed0'}}><a href={"/post/" + post._id}>{post.title}</a></h1>
                       <h2 className="subtitle is-6">{format}</h2>
+                      <button onClick={setAvatar} id={post._id} className="button is-info">Set as Avatar</button>
                     </div>
                   )
                 })}

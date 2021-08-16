@@ -31,6 +31,12 @@ export default function UserProfile(props) {
 
   return (
     <>
+      <meta name="twitter:card" content="summary_large_image"></meta>
+      <meta name="og:image" content={props.resultUser.avatar}></meta>
+      <title>{props.resultUser.name} - Sketchel!</title>
+      <meta property="og:site_name" content="Sketchel"/>
+      <meta property="og:title" content={props.resultUser.name}/>
+      <meta content={post.resultUser.description} name="description"/>
       <Container>
         {props.loggedIn ? (
           <Navbar loggedIn="true" />
@@ -197,7 +203,6 @@ export default function UserProfile(props) {
 }
   
 export async function getServerSideProps(context) { 
-
   let res = await fetch(config.API_BASE + '/api/user/' + context.query.user, {
     method: 'GET'
   })

@@ -17,12 +17,10 @@ export default function Container(props) {
                 <meta name="msapplication-TileColor" content="#5bd9ff"/>
                 <meta name="theme-color" content="#59d0ff"/>
             </Head>
-            <body>
-                <main>
-                    {children}
-                </main>
-                <Footer/>
-            </body>
+            <main>
+                {children}
+            </main>
+            <Footer/>
         </>
     )
 }

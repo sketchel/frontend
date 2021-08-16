@@ -44,7 +44,7 @@ export default function Post(props) {
               </div>
               <div className="media-content">
                 <p className="title is-4">
-                  {author.name}&nbsp;
+                  <a href={"/profile/" + author.name} style={{color: '#3e8ed0'}}>{author.name}&nbsp;</a>
                   <span className="tag is-info" id="rank">{author.rank}</span>
                 </p>
                 <p className="subtitle">{moment(author.joinedAt).format("dddd, MMMM Do YYYY")}</p>
