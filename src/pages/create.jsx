@@ -3,13 +3,12 @@ import * as React from 'react'
 import Container from '../components/Container'
 import Navbar from '../components/Navbar'
 
+import { get, set, update } from 'idb-keyval'
 import config from '../../config.json'
 import { ReactSketchCanvas } from 'react-sketch-canvas'
 import { SketchPicker } from 'react-color'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faEraser, faUndo, faRedo, faDumpster, faTrash, faPaintBrush, faUpload, faFileUpload, faFileImport, faTimes, faPalette } from '@fortawesome/free-solid-svg-icons'
-
-const styles = {}
 
 export default function Create(props) {
   const canvas = React.createRef()
@@ -20,12 +19,12 @@ export default function Create(props) {
   let [width, setWidth] = React.useState(8)
   let [paths, setPaths] = React.useState(null)
 
-  React.useEffect(() => {
-    //let t = JSON.parse(localStorage.getItem('paths')) || []
-    //const load = canvas.current.loadPaths
-    //if (load) {
-    //  if (t.length > 0) load(t)
-    //}
+  React.useEffect(async () => {
+    let p = await get('paths') || {}
+    const load = canvas.current.loadPaths
+    if (load) {
+      if (p.length > 0) load(p)
+    }
   })
 
   const undoHandler = () => {
@@ -44,6 +43,7 @@ export default function Create(props) {
 
   const resetHandler = () => {
     const reset = canvas.current.resetCanvas
+    set('paths', [])
     if (reset) {
       reset()
     }
@@ -97,7 +97,7 @@ export default function Create(props) {
 
   const onUpdate = (updatedPaths) => {
     try {
-      setPaths(JSON.stringify(updatedPaths))
+      set('paths', updatedPaths)
     } catch (e) {
       console.error(e)
     }
@@ -153,11 +153,11 @@ export default function Create(props) {
           </div>
           )}
           <div align="center">
-            <div className="container columns">
-              <div className="column container is-1 panel">
+            <div className="container columns is-mobile">
+              <div align="center" className="column container is-1 panel">
                 <div align="center">
                   <FontAwesomeIcon icon={faPaintBrush}></FontAwesomeIcon>
-                  <input title="Change brush width" id="sliderWithValue" onChange={(e) => setWidth(e.target.valueAsNumber)}className="vertically-centered more-space-upwards vertical-slider has-output-tooltip has-output is-fullwidth" step="1" min="1" max="400" defaultValue="8" type="range" orient="vertical"/>
+                  <input title="Change brush width" id="sliderWithValue" onChange={(e) => setWidth(e.target.valueAsNumber)}className="vertical-slider vertically-centered more-space-upwards has-output-tooltip has-output is-fullwidth" step="1" min="1" max="400" defaultValue="8" type="range" orient="vertical"/>
                   <output htmlFor="sliderWithValue">{width}</output>
                 </div>
                 <button id="upload" title="Upload to Sketchel" className="button is-success more-space-upwards" onClick={() => {
@@ -170,7 +170,6 @@ export default function Create(props) {
               <div className="column">
                 <ReactSketchCanvas
                   ref={canvas}
-                  style={styles}
                   width="500px"
                   height="500px"
                   strokeWidth={width}
