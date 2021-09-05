@@ -74,9 +74,9 @@ export default function Settings(props) {
     <>
       <Container>
         {props.loggedIn ? (
-          <Navbar loggedIn="true" />
+          <Navbar loggedIn="true" props={props} />
         ) : (
-          <Navbar loggedIn="false" />
+          <Navbar loggedIn="false" props={props} />
         )}
         <div className="container">
           <a href="/profile" className="text-primary">← Back to your profile</a>

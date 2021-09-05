@@ -59,8 +59,7 @@ export default function Register(props) {
           </div>
         </div>
         <br></br>
-        <div align="center" className="container">
-          <h1 className="title">Register for Sketchel!</h1>
+        <div align="center" className="container box">
           <hr />
           {form.success === false ? (
             <div className="notification is-danger"><strong>Error!</strong> {form.errors}</div>
@@ -72,22 +71,22 @@ export default function Register(props) {
           <form onSubmit={registerUser} id="signupForm">
             <div className="field">
               <div className="control"> 
-                <input className="input is-rounded" autoComplete="name" htmlFor="inputUsername" type="text" name="username" placeholder="username" required></input>
+                <input className="input" autoComplete="name" htmlFor="inputUsername" type="text" name="username" placeholder="username" required></input>
               </div>
             </div>
             <div className="field">
               <div className="control"> 
-                <input className="input is-rounded" autoComplete="email" htmlFor="inputEmail" type="email" name="email" placeholder="email" required></input>
+                <input className="input" autoComplete="email" htmlFor="inputEmail" type="email" name="email" placeholder="email" required></input>
               </div>
             </div>
             <div className="field">
               <div className="control"> 
-                <input className="input is-rounded" autoComplete="password" htmlFor="inputPassword" type="password" name="password" placeholder="password" required></input>
+                <input className="input" autoComplete="password" htmlFor="inputPassword" type="password" name="password" placeholder="password" required></input>
               </div>
             </div> 
             <div className="field">
               <div className="control"> 
-                <input className="input is-rounded" autoComplete="password" htmlFor="inputConfirmPassword" type="password" name="confirmPassword" placeholder="confirm password" required></input>
+                <input className="input" autoComplete="password" htmlFor="inputConfirmPassword" type="password" name="confirmPassword" placeholder="confirm password" required></input>
               </div>
             </div> 
             <div className="content has-text-centered">
@@ -95,8 +94,8 @@ export default function Register(props) {
               <p>Have an account already? <a href="/login" className="text-primary">Login here.</a></p>
               <div className="field">
                 <input className="is-checkradio is-success" type="checkbox" name="tosCheck" id="tosCheck" />
-                <label htmlFor="tosCheck"> I agree to the <a href="/terms" className="text-primary">Terms of Service</a> and confirm I am 13 or above.</label>
-                <p> by registering in you agree to our <a href="/privacy" className="text-primary">Privacy Policy</a></p>
+                <label htmlFor="tosCheck"> I agree to the <a href="/terms" style={{color: '#3e8ed0'}} className="text-primary">Terms of Service</a> and confirm I am 13 or above.</label>
+                <p> by registering in you agree to our <a href="/privacy" style={{color: '#3e8ed0'}} className="text-primary">Privacy Policy</a></p>
               </div>
             </div>  
             <input className="button is-success is-medium is-rounded g-recaptcha" type="submit" value="Register" data-callback="submitForm"></input>          

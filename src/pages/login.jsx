@@ -61,8 +61,7 @@ export default function Login(props) {
               </div>
             </div>
             <br></br>
-            <div align="center" className="container">
-              <h1 className="title">Login to Sketchel!</h1>
+            <div align="center" className="container box">
               <hr />
               {form.success === false ? (
                 <div className="notification is-danger"><strong>Error!</strong> {form.errors}</div>
@@ -74,12 +73,12 @@ export default function Login(props) {
               <form onSubmit={loginUser} id="loginForm">
                 <div className="field">
                   <div className="control"> 
-                    <input className="input is-rounded" autoComplete="name" htmlFor="inputUsername" type="text" name="username" placeholder="username" required></input>
+                    <input className="input" autoComplete="name" htmlFor="inputUsername" type="text" name="username" placeholder="username" required></input>
                   </div>
                 </div>
                 <div className="field">
                   <div className="control"> 
-                    <input className="input is-rounded" autoComplete="password" htmlFor="inputPassword" type="password" name="password" placeholder="password" required></input>
+                    <input className="input" autoComplete="password" htmlFor="inputPassword" type="password" name="password" placeholder="password" required></input>
                   </div>
                 </div> 
                 <input className="is-checkradio is-success" type="checkbox" name="rememberMeCheck" id="rememberMeCheck" />
@@ -87,7 +86,7 @@ export default function Login(props) {
                 <div className="content has-text-centered">
                   <p>Don't have an account? <a href="/register" className="text-primary">Register here.</a></p>
                 </div>  
-                <input className="button is-success is-medium is-rounded g-recaptcha" type="submit" value="Login" data-callback="submitForm"></input>          
+                <input className="button is-success is-medium g-recaptcha" type="submit" value="Login" data-callback="submitForm"></input>          
                 <br /> 
               </form>
             </div>

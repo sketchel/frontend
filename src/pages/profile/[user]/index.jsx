@@ -36,12 +36,12 @@ export default function UserProfile(props) {
       <title>{props.resultUser.name} - Sketchel!</title>
       <meta property="og:site_name" content="Sketchel"/>
       <meta property="og:title" content={props.resultUser.name}/>
-      <meta content={post.resultUser.description} name="description"/>
+      <meta content={props.resultUser.description} name="description"/>
       <Container>
         {props.loggedIn ? (
-          <Navbar loggedIn="true" />
+          <Navbar loggedIn="true" props={props} />
         ) : (
-          <Navbar loggedIn="false" />
+          <Navbar loggedIn="false" props={props} />
         )}
         <script src="/js/modal.js"></script>
         <div className="modal is-clipped" id="followingModal">

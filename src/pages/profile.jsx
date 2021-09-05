@@ -49,9 +49,9 @@ export default function Profile(props) {
     <>
       <Container>
         {props.loggedIn ? (
-          <Navbar loggedIn="true" />
+          <Navbar loggedIn="true" props={props} />
         ) : (
-          <Navbar loggedIn="false" />
+          <Navbar loggedIn="false" props={props} />
         )}
         <script async src="/js/modal.js"></script>
         <div className="modal is-clipped" id="profileModal">

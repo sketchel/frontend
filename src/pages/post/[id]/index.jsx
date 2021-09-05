@@ -24,9 +24,9 @@ export default function Post(props) {
       <meta content={post.description} name="description"/>
       <Container>
         {props.loggedIn ? (
-          <Navbar loggedIn="true" />
+          <Navbar loggedIn="true" props={props} />
         ) : (
-          <Navbar loggedIn="false" />
+          <Navbar loggedIn="false" props={props} />
         )}
         <br></br>
         <div align="center" className="container">

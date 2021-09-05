@@ -23,7 +23,7 @@ export default function Create(props) {
     let p = await get('paths') || {}
     const load = canvas.current.loadPaths
     if (load) {
-      if (p.length > 0) load(p)
+      load(p)
     }
   })
 
@@ -107,9 +107,9 @@ export default function Create(props) {
     <>
       <Container>
         {props.loggedIn ? (
-          <Navbar loggedIn="true" />
+          <Navbar loggedIn="true" props={props} />
         ) : (
-          <Navbar loggedIn="false" />
+          <Navbar loggedIn="false" props={props} />
         )}
         <br />
           <script src="/js/canvas.js"></script>
@@ -176,6 +176,7 @@ export default function Create(props) {
                   eraserWidth={width}
                   strokeColor={color}
                   onUpdate={onUpdate}
+                  paths={paths}
                 />
               </div>
               <div className="column container is-1 panel">
