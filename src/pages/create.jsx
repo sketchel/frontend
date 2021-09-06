@@ -23,7 +23,7 @@ export default function Create(props) {
     let p = await get('paths') || {}
     const load = canvas.current.loadPaths
     if (load) {
-      load(p)
+      if (p.length > 0) load(p)
     }
   })
 
