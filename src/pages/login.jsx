@@ -8,92 +8,75 @@ import fetch from 'node-fetch'
 import { useState } from 'react'
 
 export default function Login(props) {
-    let [form, setForm] = useState(false)
-    const cookie = useCookie(props.cookie)
+  let [form, setForm] = useState(false)
+  const cookie = useCookie(props.cookie)
 
-    const loginUser = async event => {
-        event.preventDefault()
-        const res = await fetch(
-          config.API_BASE + '/account/login',
-          {
-            body: JSON.stringify({
-              username: event.target.username.value,
-              password: event.target.password.value,
-              rememberMe: event.target.rememberMeCheck.checked
-            }),
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            method: 'POST'
-          }
-        )
-        const result = await res.json()
-        if (result.errors) {
-          setForm({
-            success: result.success,
-            message: result.message,
-            errors: result.errors.join(', ')
-          })
-        } else {
-          setForm({
-            success: result.success,
-            message: result.message
-          })
-          cookie.set('session', result.session)
-          cookie.set('loggedIn', true)
-          cookie.set('user', result.user)
+  const loginUser = async event => {
+    event.preventDefault()
+    const res = await fetch(
+        config.API_BASE + '/account/login',
+        {
+          body: JSON.stringify({
+            username: event.target.username.value,
+            password: event.target.password.value,
+            rememberMe: event.target.rememberMeCheck.checked
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          method: 'POST'
         }
-        return result
+      )
+      const result = await res.json()
+      if (result.errors) {
+        setForm({
+          success: result.success,
+          message: result.message,
+          errors: result.errors.join(', ')
+        })
+      } else {
+        setForm({
+          success: result.success,
+          message: result.message
+        })
+        cookie.set('session', result.session)
+        cookie.set('loggedIn', true)
+        cookie.set('user', result.user)
       }
-    return (
-        <>
-          <Container>
-            <div className="section hero is-info is-bold">
-              <div className="">
-                <div className="hero-head">
-                  {props.loggedIn ? (
-                    <Navbar loggedIn="true" />
-                  ) : (
-                    <Navbar loggedIn="false" />
-                  )}
-                  
-                </div>
-              </div>
+      return result
+    }
+  return (
+    <>
+      <Container>
+        <Navbar cookie={props.cookie}/>
+        <main className="branding"> 
+          <h1 className="title">Login</h1>
+          <h2 className="subtitle">Don't have an account? Head to the <a href="/register">register page</a>.</h2>
+          {form.success === false ? (
+            <div className="error-box">
+              <h2 className="subtitle"><strong>Error!</strong> {form.errors}</h2>
             </div>
-            <br></br>
-            <div align="center" className="container box">
-              <hr />
-              {form.success === false ? (
-                <div className="notification is-danger"><strong>Error!</strong> {form.errors}</div>
-              ) : form.success === true ? (
-                <meta http-equiv="refresh" content="0; URL=/" />
-              ) : (
-                ''
-              )}
-              <form onSubmit={loginUser} id="loginForm">
-                <div className="field">
-                  <div className="control"> 
-                    <input className="input" autoComplete="name" htmlFor="inputUsername" type="text" name="username" placeholder="username" required></input>
-                  </div>
-                </div>
-                <div className="field">
-                  <div className="control"> 
-                    <input className="input" autoComplete="password" htmlFor="inputPassword" type="password" name="password" placeholder="password" required></input>
-                  </div>
-                </div> 
-                <input className="is-checkradio is-success" type="checkbox" name="rememberMeCheck" id="rememberMeCheck" />
-                <label htmlFor="rememberMeCheck"> Remember me</label>
-                <div className="content has-text-centered">
-                  <p>Don't have an account? <a href="/register" className="text-primary">Register here.</a></p>
-                </div>  
-                <input className="button is-success is-medium g-recaptcha" type="submit" value="Login" data-callback="submitForm"></input>          
-                <br /> 
-              </form>
-            </div>
-            <br></br>
-          </Container>
-        </>
-    )
+          ) : form.success === true ? (
+            <meta http-equiv="refresh" content="0; URL=/" />
+          ) : (
+            ''
+          )}
+          <div className="fields">
+            <form onSubmit={loginUser}>
+              <input name="username" autoComplete="name" htmlFor="inputUsername" type="text" className="field" placeholder="username or email" required/>
+              <input name="password" autoComplete="password" htmlFor="inputPassword" type="password" className="field" placeholder="password" required/>
+              <input type="checkbox" name="rememberMeCheck" id="rememberMeCheck" />
+              <label htmlFor="rememberMeCheck">Remember me</label>
+              <br/>
+              <hr/>
+              <input className="button success" type="submit" value="Login" data-callback="submitForm"/>
+            </form>
+          </div>
+        </main>
+        <Footer/>
+      </Container>
+    </>
+  )
 }
 
 export function getServerSideProps(context) {

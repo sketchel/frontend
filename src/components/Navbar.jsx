@@ -1,13 +1,15 @@
+import Link from 'next/link'
+import { faCogs, faHome, faIdCard, faPowerOff, faSearch, faSignInAlt, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons'
+import { faDiscord } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import { useCookie } from 'next-cookie'
 import config from '../../config.json'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignInAlt, faUserPlus, faFire, faRssSquare, faSearch, faPaintBrush, faBell, faSign } from '@fortawesome/free-solid-svg-icons'
-import { faDiscord } from '@fortawesome/free-brands-svg-icons'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 export default function Navbar(props) {
     const cookie = useCookie(props.cookie)
+    let loggedIn = cookie.get('loggedIn') || null
     let [name, setName] = useState(null)
 
     useEffect(async () => {
@@ -27,10 +29,8 @@ export default function Navbar(props) {
         cookie.remove('user')
         cookie.remove('session')
         cookie.remove('loggedIn')
-        window.location.reload()
       }
     })
-
     const logout = async () => {
         await fetch(
           config.API_BASE + '/users/logout',
@@ -49,61 +49,58 @@ export default function Navbar(props) {
     }
 
     return (
-        <header>
-            <nav className="navbar is-spaced" role="navigation" aria-label="main navigation">
-                <a href="/" className="navbar-brand">
-                    <figure className="image is-48x48">
-                        <Image src="/assets/Sketchel.png" alt="Logo" height={48} width={48} />
-                    </figure>
-                    <a className="navbar-burger" role="button" data-target="navbar" aria-label="menu" aria-expanded="false">
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
+        <nav className="navbar">
+            <div className="navbar-start">
+                <Link href="/">
+                    <a className="logo">
+                        <img title="Sketchel!" alt="Sketchel" src="/assets/temp.png" height="48px" width="48px"></img>  
                     </a>
-                </a> 
-                {props.loggedIn === "false" ? (
-                    <div className="navbar-menu is-active" id="navbar">
-                        <div className="navbar-start">
-                            <a className="navbar-item left-spaced" href="https://discord.com/invite/WTJeh8eCVD"> <FontAwesomeIcon icon={faDiscord}/>&nbsp;Discord</a>
-                        </div>
-                        <div className="navbar-end">
-                            <a className="navbar-item" href="/login">
-                                <FontAwesomeIcon icon={faSignInAlt}/>&nbsp;Login
-                            </a>
-                            <a className="navbar-item" href="/register">
-                                <FontAwesomeIcon icon={faUserPlus}/>&nbsp;Register
-                            </a>
-                        </div>
+                </Link>
+                <div className="navbar-element">
+                    <Link href="/">
+                        <button title="Go to the home page" className="button">
+                            <FontAwesomeIcon icon={faHome}></FontAwesomeIcon>&nbsp;Home
+                        </button>  
+                    </Link>
+                </div>
+            <div className="navbar-element">
+                <Link target="_blank" href="https://discord.gg/xKpz5GjFqQ">
+                    <button title="Redirects you to a URL for the discord server." className="button secondary">
+                        <FontAwesomeIcon icon={faDiscord}></FontAwesomeIcon>
+                    </button>  
+                </Link>
+            </div>
+        </div>
+        {!loggedIn ? (
+            <div className="navbar-end">
+            <Link href="/login">
+                <button title="Sends you to the login page." className="button">
+                    <FontAwesomeIcon icon={faSignInAlt}></FontAwesomeIcon>&nbsp;Login
+                </button>  
+            </Link>
+            <Link href="/register">
+                <button title="Sends you to the register page." className="button">
+                    <FontAwesomeIcon icon={faUserPlus}></FontAwesomeIcon>&nbsp;Register
+                </button>  
+            </Link>
+            </div>
+        ) : (
+            <div className="navbar-end">
+                <Link target="_blank" href="/search">
+                    <button title="Sends you to the search page" className="button secondary">
+                        <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+                    </button>  
+                </Link>
+                <button className="button dropdown personal" title="Dropdown for profile specific things.">
+                    <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>&nbsp;{name}
+                    <div class="dropdown-content">
+                        <a href="/profile" title="Visit your profile"><FontAwesomeIcon icon={faIdCard}></FontAwesomeIcon>&nbsp;Profile</a>
+                        <a href="/settings" title="Visit the settings page"><FontAwesomeIcon icon={faCogs}></FontAwesomeIcon>&nbsp;Settings</a>
+                        <a onClick={logout} title="Logout of Sketchel"><FontAwesomeIcon icon={faPowerOff}></FontAwesomeIcon>&nbsp;Logout</a>
                     </div>
-                ) : (
-                    <div className="navbar-menu is-active" id="navbar">
-                        <div className="navbar-start">
-                            <a className="navbar-item" href="/hot">
-                                <FontAwesomeIcon icon={faFire}/>&nbsp;Popular
-                            </a>
-                            <a className="navbar-item" href="/feed">
-                                <FontAwesomeIcon icon={faRssSquare}/>&nbsp;Feed
-                            </a>      
-                            <a className="navbar-item" href="/search">
-                                <FontAwesomeIcon icon={faSearch}/>&nbsp;Search
-                            </a>                                       
-                        </div>
-                        <div className="navbar-end">
-                            <a className="navbar-item"> <FontAwesomeIcon icon={faBell}/></a>
-                            <a className="navbar-item" href="/create"> <FontAwesomeIcon icon={faPaintBrush}/></a>
-                            <div className="navbar-item has-dropdown is-hoverable">
-                                <a className="navbar-link" id="name">{name}</a>
-                                <div className="navbar-dropdown">
-                                    <a className="navbar-item" href="/profile"> Profile</a>
-                                    <a className="navbar-item" href="/settings"> Settings</a>
-                                    <hr className="navbar-divider"></hr>
-                                    <a className="navbar-item" onClick={logout}> Logout</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </nav>
-        </header>
+                </button>
+            </div>
+        )}
+      </nav>
     )
 }

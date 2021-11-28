@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react'
-import config from '../../config.json'
-import { useCookie } from 'next-cookie'
-
 import Container from '../components/Container'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
+import { useCookie } from 'next-cookie'
+import { useState, useEffect } from 'react'
+import config from '../../config.json'
 
 export default function Settings(props) {
   let [form, setForm] = useState(false)
   const cookie = useCookie(props.cookie)
+
   useEffect(async () => {  
     let res = await fetch(
       config.API_BASE + '/users/@me',
@@ -69,90 +69,61 @@ export default function Settings(props) {
       }
       return result
     }
-
+  
   return (
     <>
       <Container>
-        {props.loggedIn ? (
-          <Navbar loggedIn="true" props={props} />
-        ) : (
-          <Navbar loggedIn="false" props={props} />
-        )}
-        <div className="container">
-          <a href="/profile" className="text-primary">← Back to your profile</a>
-        </div>
-        <br />
-        <div className="container">
-          <div align="center">
-            <h1 className="title is-4">Settings</h1>
-          </div>
-          <form onSubmit={submitSettings}>
-            <br/>
+        <Navbar cookie={props.cookie}/>
+        <main>
+          <div className="branding">
+            <h1 className="title">⚙️ Settings</h1>
+            <h2 className="subtitle">Customize your user settings.</h2>
             {form.success === false ? (
-              <div className="notification is-danger"><strong>Error!</strong> {form.errors}</div>
+              <div className="error-box">
+                <h2 className="subtitle"><strong>Error!</strong> {form.errors}</h2>
+              </div>
             ) : form.success === true ? (
-              <div className="notification is-success"><strong>Success!</strong></div>
-            ) : (
-              ''
+              <div className="success-box">
+                <h2 className="subtitle"><strong>Success!</strong> Successfully saved your changes.</h2>
+              </div>
+              ) : (
+                ''
             )}
-            <p>Change username</p>
-            <br />
-            <hr />
-            <div className="field">
-              <p className="control">
-                <input className="input is-rounded" htmlFor="currentPassword2" type="password" name="currentPassword2" placeholder="current password"></input>
-              </p>
+            <div className="fields">
+              <form onSubmit={submitSettings}>
+                <h2 className="subtitle">Change username</h2>
+                <input className="field" htmlFor="currentPassword2" type="password" name="currentPassword2" placeholder="current password"/>
+                <input className="field" htmlFor="newUsername" type="text" name="newUsername" placeholder="change username"/>
+                <h2 className="subtitle">Change password</h2>
+                <input className="field" htmlFor="currentPassword" type="password" name="currentPassword" placeholder="current password"/>
+                <input className="field" htmlFor="newPassword" type="password" name="newPassword" placeholder="new password"/>
+                <br/>
+                <input type="checkbox" name="privateCheck" id="privateCheck" />
+                <label htmlFor="privateCheck">Protect my content</label>
+                <br/>
+                <input type="checkbox" name="nsfwCheck" id="nsfwCheck" />
+                <label htmlFor="nsfwCheck">My content is NSFW (18+)</label>
+                <hr/>
+                <input className="button success" type="submit" value="Save Changes" data-callback="submitForm"/>
+              </form>
             </div>
-            <div className="field">
-              <p className="control">
-                <input className="input is-rounded" htmlFor="newUsername" type="text" name="newUsername" placeholder="new username"></input>
-              </p>
-            </div>
-            <p>Change password</p>
-            <br />
-            <hr />
-            <div className="field">
-              <p className="control">
-                <input className="input is-rounded" htmlFor="currentPassword" type="password" name="currentPassword" placeholder="current password"></input>
-              </p>
-            </div>
-            <div className="field">
-              <p className="control">
-                <input className="input is-rounded" htmlFor="newPassword" type="password" name="newPassword" placeholder="new password"></input>
-              </p>
-            </div>
-            <div className="field">
-              <input className="is-checkradio is-danger has-background-color" type="checkbox" name="nsfwCheck" id="nsfwCheck"></input>
-              <label htmlFor="nsfwCheck"> Do you post NSFW (18+) content?</label>
-            </div>
-            <div className="field">
-              <input className="is-checkradio is-danger has-background-color" type="checkbox" name="privateCheck" id="privateCheck"></input>
-              <label htmlFor="nsfwCheck"> Protect your profile</label>
-            </div>     
-            <div align="center">
-              <input className="button is-success is-medium is-rounded" data-callback="submitForm" type="submit" value="Save Changes"></input>
-            </div>
-          </form>
-        </div>
-        <br />
+          </div>
+        </main>
+        <Footer/>
       </Container>
     </>
   )
 }
-  
+
 export async function getServerSideProps(context) {
   const cookie = useCookie(context)
-  let r = await fetch(config.API_BASE + '/users/@me' + cookie.get('user'), {
-    method: 'GET',
-    headers: {
-      Authorization: cookie.get('session')
-    }
-  })
-  r = await r.json()
-  if (!r.user && cookie.get('user')) {
-    cookie.remove('user')
-    cookie.remove('session')
-    cookie.remove('loggedIn')
+  if (!cookie.get('loggedIn')) {
+      return {
+        redirect: {
+            permanent: false,
+            destination: "/login"
+        }
+      }
   }
   return {
     props: {

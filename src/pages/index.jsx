@@ -1,25 +1,23 @@
-import { useCookie } from 'next-cookie'
 import Container from '../components/Container'
 import Footer from '../components/Footer'
-
-import config from '../../config.json'
-import Landing from '../components/Landing'
-import Landing2 from '../components/Landing2'
+import Navbar from '../components/Navbar'
+import { useCookie } from 'next-cookie'
 
 export default function Home(props) {
   return (
     <>
       <Container>
-        {props.loggedIn ? (
-          <Landing2 props={props} />
-        ) : (
-          <Landing props={props} />
-        )}
+        <Navbar cookie={props.cookie}/>
+        <main className="branding">
+          <h1 className="title">🚧W.I.P.</h1>
+          <h2 className="subtitle">This page is a work in progress, come back soon when it's done!</h2>
+        </main>
+        <Footer/>
       </Container>
     </>
   )
 }
-  
+
 export async function getServerSideProps(context) {
   const cookie = useCookie(context)
   return {
